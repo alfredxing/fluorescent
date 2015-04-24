@@ -1,16 +1,13 @@
-{
-    // Required
+
     "name": "Flourescent",
     "version": "1.0",
     "manifest_version": 2,
 
-    // Icons
     "icons": {
         "19": "images/icon-16.png",
         "38": "images/icon-48.png",
     },
 
-    // Recommended
     "default_locale": "en",
     "description": "",
 
