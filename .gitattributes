@@ -1,1 +1,4 @@
-README.md merge=ours
+README.md                    merge=ours
+
+app/styles/styles.css        -diff
+app/styles/styles.css.map    -diff
