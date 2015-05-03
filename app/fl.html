@@ -2,23 +2,30 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <link href="styles/styles.css" rel="stylesheet" type="text/css">
+    <link href="assets/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <title>fluorescent</title>
 </head>
 <body>
-    <header>
-        <h1 class="fl-logo">
-            <object class="fl-logo-svg" type="image/svg+xml" data="images/icon.svg">fl</object>
-        </h1>
-        <div class="fl-settings-icon">
-            <object class="fl-settings-icon-svg" type="image/svg+xml" data="images/settings-icon.svg">settings</object>
-        </div>
-        <form class="fl-search">
-            <object class="fl-search-icon-svg" type="image/svg+xml" data="images/search-icon.svg">search</object>
-            <input class="fl-search-input text" name="search" placeholder="Search Annotations" type="text" autocomplete="off">
-            <object class="fl-filter-icon-svg" type="image/svg+xml" data="images/filter-icon.svg">filter</object>
-        </form>
+    <nav class="settings-menu">
+        <ul class="settings-menu-options">
+            <li><a href="#">Potato</a></li>
+            <li><a href="#">About fluorescent</a></li>
+        </ul>
+    </nav>
+    <div class="wrapper">
+        <header>
+            <h1 class="fl-logo">
+                <object class="fl-logo-svg" type="image/svg+xml" data="assets/images/icon.svg">fl</object>
+            </h1>
+            <div class="fl-settings-icon"></div>
+            <form class="fl-search">
+                <input class="fl-search-input text" name="search" placeholder="Search annotations" type="text" autocomplete="off">
+                <object class="fl-filter-icon-svg" type="image/svg+xml" data="assets/images/filter-icon.svg">filter</object>
+            </form>
+        </header>
+    </div>
 
-    </header>
+    <script type="text/javascript" src="assets/scripts/bower_components/classie/classie.js"></script>
+    <script type="text/javascript" src="assets/scripts/settings-menu.js"></script>
 </body>
 </html>

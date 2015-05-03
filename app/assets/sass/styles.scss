@@ -1,0 +1,122 @@
+@import "partials/base";
+
+html {
+  @include box-sizing(border-box);
+}
+
+*, *:before, *:after {
+  @include box-sizing(inherit);
+}
+
+a { @include link-colors(#fff, #fff, #fff, #fff)}
+
+input, select, textarea, button{
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  font-size: 19px;
+  color: #333;
+  background: #fff;
+  margin: 0;
+  overflow-x: hidden;
+}
+  .settings-menu {
+    height: 100vh;
+    width: 0;
+    z-index: 1;
+    float: right;
+    @include background(linear-gradient(90deg, #061826 0%, #061826 3%, $fl-navy 3%, $fl-navy 100%));
+
+    @include transition(width 0.2s ease-in-out);
+
+    &.open {
+      width: 250px;
+    }
+
+    a {
+      width: 100%;
+      padding: 24px;
+      border-bottom: $menu-border;
+      display: block;
+      text-decoration: none;
+
+      &:hover {
+        background: $fl-turqoise;
+      }
+    }
+  }
+
+  .settings-menu-options {
+    width: 300px;
+  }
+  .wrapper {
+    width: 100%;
+  }
+    header {
+      height: 70px;
+      border-bottom: $main-border;
+
+      > * {
+        height: 100%;
+        margin: 0;
+        padding: 14px 20px;
+      }
+    }
+      /* Logo */
+      .fl-logo {
+        border-right: $main-border;
+        float: left;
+
+        &:hover {
+          background: #eeeeee;
+        }
+      }
+        .fl-logo-svg {
+          height: 42px;
+        }
+
+      /* Search bar */
+      .fl-search {
+        overflow: hidden;
+        position: relative;
+        background: image-url("search-icon.svg") no-repeat 20px 22px;
+        background-size: 25px 25px;
+      }
+        .fl-search-input {
+          border: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0 0 0 40px;
+
+          &:focus {
+            outline: 0;
+          }
+        }
+        .fl-filter-icon-svg {
+          height: 22px;
+          position: absolute;
+          right: 24px;
+          top: 24px;
+        }
+
+      /* Settings button */
+      .fl-settings-icon {
+        width: 80px;
+        float: right;
+        border-left: $main-border;
+        background: image-url("settings-icon.svg") no-repeat center;
+        background-size: 40% 40%;
+
+        &.open {
+          background: image-url("settings-close-icon.svg") no-repeat center;
+          background-size: 30% 30%;
+        }
+
+        &:hover {
+          background-color: #eeeeee;
+        }
+      }
