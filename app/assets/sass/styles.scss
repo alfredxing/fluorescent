@@ -8,7 +8,14 @@ html {
   @include box-sizing(inherit);
 }
 
-a { @include link-colors(#fff, #fff, #fff, #fff)}
+$base-font-size: 19px;
+$base-line-height: 28px;
+@include establish-baseline;
+
+h1 { @include adjust-font-size-to(41px) }
+h2 { @include adjust-font-size-to(26px) }
+
+a { }
 
 input, select, textarea, button{
   font-family: inherit;
@@ -18,16 +25,32 @@ input, select, textarea, button{
 
 body {
   font-family: "Arial", sans-serif;
-  font-size: 19px;
   color: #333;
   background: #fff;
   overflow-x: hidden;
 }
 
-  @import "partials/settings-menu";
-
-  .wrapper {
+  .header-wrapper {
+    position: fixed;
     width: 100%;
   }
 
-  @import "partials/header";
+    @import "partials/header";
+    @import "partials/settings-menu";
+
+
+    .color-bar {
+      height: 0px;
+      background: $fl-yellow;
+
+      &.open {
+        height: 6px;
+      }
+    }
+
+  .content-wrapper {
+    padding-top: 70px;
+    width: 100%;
+  }
+
+    @import "partials/grouping";

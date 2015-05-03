@@ -21,9 +21,11 @@
     &:hover {
       background: $fl-turqoise;
     }
+
+    @include link-colors(#fff, #fff, #fff, #fff);
   }
 }
 
-.settings-menu-options {
-  width: 300px;
-}
+  .settings-menu-options {
+    width: 300px;
+  }
