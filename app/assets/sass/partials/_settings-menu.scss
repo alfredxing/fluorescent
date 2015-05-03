@@ -7,9 +7,7 @@
 
   @include transition(width 0.2s ease-in-out);
 
-  &.open {
-    width: 250px;
-  }
+  &.open {  width: 250px;  }
 
   a {
     width: 100%;
@@ -18,14 +16,10 @@
     display: block;
     text-decoration: none;
 
-    &:hover {
-      background: $fl-turqoise;
-    }
+    &:hover {  background: $fl-turqoise;  }
 
     @include link-colors(#fff, #fff, #fff, #fff);
   }
 }
 
-  .settings-menu-options {
-    width: 300px;
-  }
+  .settings-menu-options {  width: 300px;  }

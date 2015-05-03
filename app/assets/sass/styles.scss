@@ -33,6 +33,10 @@ body {
   .header-wrapper {
     position: fixed;
     width: 100%;
+
+    // allow mouse clicks to pass through empty wrapper area
+    pointer-events: none;
+    > * {  pointer-events: auto;  }
   }
 
     @import "partials/header";
@@ -43,9 +47,7 @@ body {
       height: 0px;
       background: $fl-yellow;
 
-      &.open {
-        height: 6px;
-      }
+      &.open {  height: 6px;  }
     }
 
   .content-wrapper {

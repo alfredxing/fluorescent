@@ -14,9 +14,7 @@ header {
     border-right: $main-border;
     float: left;
 
-    &:hover {
-      background: #eeeeee;
-    }
+    &:hover {  background: #eeeeee;  }
   }
   .fl-logo-svg {
     height: 42px;
@@ -36,9 +34,7 @@ header {
     margin: 0 0 0 40px;
     background: none;
 
-    &:focus {
-      outline: 0;
-    }
+    &:focus {  outline: 0;  }
   }
   .fl-filter-icon-svg {
     height: 22px;
@@ -60,7 +56,5 @@ header {
       background-size: 30% 30%;
     }
 
-    &:hover {
-      background-color: #eeeeee;
-    }
+    &:hover {  background-color: #eeeeee;  }
   }

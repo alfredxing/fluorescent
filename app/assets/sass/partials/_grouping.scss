@@ -6,9 +6,7 @@
     padding-right: 24px;
   }
 
-  &:last-of-type {
-    @include padding-trailer;
-  }
+  &:last-of-type {  @include padding-trailer;  }
 }
   .grouping-label {
     border-bottom: $main-border;
