@@ -7,361 +7,53 @@
     <link href="assets/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <title>fluorescent</title>
 </head>
-<body>
-    <div class="header-wrapper">
-        <nav class="settings-menu">
-            <ul class="settings-menu-options">
-                <li><a href="#">Potato</a></li>
-                <li><a href="#">About fluorescent</a></li>
-            </ul>
-        </nav>
-        <header>
-            <h1 class="fl-logo">
-                <object class="fl-logo-svg" type="image/svg+xml" data="assets/images/icon.svg">fl</object>
-            </h1>
-            <div class="fl-settings-icon"></div>
-            <form class="fl-search">
-                <input class="fl-search-input text" name="search" placeholder="Search annotations" type="text" autocomplete="off">
-                <object class="fl-filter-icon-svg" type="image/svg+xml" data="assets/images/filter-icon.svg">filter</object>
-            </form>
-        </header>
-        <div class="color-bar open">
+<body ng-app="fluorescent">
+    <div class="container" ng-controller="mainController">
+        <div class="header-wrapper">
+            <nav class="settings-menu">
+                <ul class="settings-menu-options">
+                    <li><a href="#">Potato</a></li>
+                    <li><a href="#">About fluorescent</a></li>
+                </ul>
+            </nav>
+            <header>
+                <h1 class="fl-logo">
+                    <object class="fl-logo-svg" type="image/svg+xml" data="assets/images/icon.svg">fl</object>
+                </h1>
+                <div class="fl-settings-icon"></div>
+                <form class="fl-search">
+                    <input class="fl-search-input text" name="search" placeholder="Search annotations" type="text" autocomplete="off">
+                    <object class="fl-filter-icon-svg" type="image/svg+xml" data="assets/images/filter-icon.svg">filter</object>
+                </form>
+            </header>
+            <div class="color-bar open" ng-style="{'background': colorBarGradient}">
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <section class="annotation-grouping" ng-repeat="grouping in groupings">
+                <div class="grouping-header">
+                    <div class="grouping-count">{{ grouping.resultCount }} annotations</div>
+
+                    <img class="favicon" ng-src="{{ grouping.faviconPath }}">
+                    <h2 class="grouping-label">{{ grouping.urlLabel }}</h2>
+                </div>
+                <ul class="grouping-elements" ng-repeat="annotation in grouping.annotations">
+                    <li>
+                        <p class="annotation-date">{{ annotation.createdOn }}</p>
+                        <a href="#" class="page-title">{{ annotation.pageTitle }}</a>
+                        <a href="#" class="annotation-text" ng-style="{background: annotation.color}">{{ annotation.content }}</a>
+                    </li>
+                </ul>
+            </section>
         </div>
     </div>
-    <div class="content-wrapper">
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
 
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
+    <script type="text/javascript" src="js/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/bower_components/classie/classie.js"></script>
 
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">4 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.google.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text green">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-        <section class="annotation-grouping">
-            <div class="grouping-header">
-                <div class="grouping-count">3 annotations</div>
-
-                <img class="favicon" src="assets/images/icon.svg">
-                <h2 class="grouping-label">www.facebook.com</h2>
-            </div>
-            <ul class="grouping-elements">
-                <li>
-                    <p class="annotation-date">Jun 02, 15</p>
-                    <a href="#" class="page-title">Page Title</a>
-                    <a href="#" class="annotation-text green">Annotation</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text yellow">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-                <li>
-                    <p class="annotation-date">Sept 19, 2015</p>
-                    <a href="#" class="page-title">Another Title of an Awesome Webpage</a>
-                    <a href="#" class="annotation-text">The quick brown fox jumps over the lazy dog.</a>
-                </li>
-            </ul>
-        </section>
-    </div>
-
-    <script type="text/javascript" src="assets/scripts/bower_components/classie/classie.js"></script>
-    <script type="text/javascript" src="assets/scripts/settings-menu.js"></script>
+    <script type="text/javascript" src="app.module.js"></script>
+    <script type="text/javascript" src="js/utilities.js"></script>
+    <script type="text/javascript" src="js/settings-menu.js"></script>
+    <script type="text/javascript" src="components/main/mainController.js"></script>
 </body>
 </html>
