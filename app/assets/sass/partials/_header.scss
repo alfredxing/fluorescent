@@ -18,11 +18,11 @@ header {
 
     &:hover {  background: #eeeeee;  }
 
-    @include respond-to(handhelds) { padding: 2px 10px };
+    @include respond-to(handhelds) { padding: 6px 10px };
   }
   .fl-logo-svg {
     height: 38px;
-    @include respond-to(handhelds) { height: 30px };
+    @include respond-to(handhelds) { height: 32px };
   }
 
   /* Search bar */
