@@ -1,30 +1,23 @@
 @import "partials/base";
 
-html {
-  @include box-sizing(border-box);
-}
-
-*, *:before, *:after {
-  @include box-sizing(inherit);
-}
-
-$base-font-size: 19px;
-$base-line-height: 28px;
+$base-font-size: 17px;
+$base-line-height: 24px;
 @include establish-baseline;
 
 h1 { @include adjust-font-size-to(41px) }
 h2 { @include adjust-font-size-to(26px) }
 
-a { }
+a {
+  text-decoration: none;
+  @include link-colors($link-color, $link-color, $link-color, $link-color);
+  font-weight: bold;
 
-input, select, textarea, button{
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
+  @include hover-link;
 }
 
+
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #333;
   background: #fff;
   overflow-x: hidden;
@@ -33,6 +26,7 @@ body {
   .header-wrapper {
     position: fixed;
     width: 100%;
+    z-index: 1;
 
     // allow mouse clicks to pass through empty wrapper area
     pointer-events: none;
@@ -47,7 +41,7 @@ body {
       height: 0px;
       background: $fl-yellow;
 
-      &.open {  height: 6px;  }
+      &.open {  height: 5px;  }
     }
 
   .content-wrapper {

@@ -1,16 +1,80 @@
 .annotation-grouping {
-  @include padding-leader;
+  &:first-of-type { @include padding-leader; }
+  @include padding-trailer;
 
-  > * {
+  > .grouping-header, .grouping-elements li {
     padding-left: 24px;
     padding-right: 24px;
   }
-
-  &:last-of-type {  @include padding-trailer;  }
 }
-  .grouping-label {
+  .grouping-header {
     border-bottom: $main-border;
-    font-weight: bold;
-    @include adjust-font-size-to(14px);
     @include margin-trailer;
+
+    %grouping-text {
+      @include adjust-font-size-to(14px);
+      font-weight: bold;
+    }
+
+    h2 {
+      @extend %grouping-text;
+      display: inline-block;
+    }
   }
+    .grouping-count {
+      @extend %grouping-text;
+      float: right;
+    }
+    .favicon {
+      height: 16px;
+      display: inline-block;
+      margin: 0 5px -3px 0;
+    }
+  .grouping-elements {
+    li {
+      display: block;
+      padding: 7px 0 0;
+
+      &:hover {
+        background: #eeeeee;
+      }
+    }
+    p, a {
+      display: inline-block;
+      @include single-line-text;
+    }
+
+    position: relative;
+  }
+    .annotation-date {
+      width: 15%;
+      padding-left: 20px;
+      float: right;
+      text-align: right;
+    }
+    .page-title {
+      width: 25%;
+      padding-left: 20px;
+      float: right;
+    }
+    a.annotation-text {
+      padding: 0 10px;
+      max-width: 60%;
+      color: $fl-navy;
+      font-weight: normal;
+      text-decoration: none;
+      background: $fl-turqoise-light;
+      &:hover {  background: $fl-turqoise;  }
+
+      &.green {
+        background: $fl-green-light;
+        &:hover {  background: $fl-green;  }
+      }
+
+      &.yellow {
+        background: $fl-yellow-light;
+        &:hover {  background: $fl-yellow;  }
+      }
+
+
+    }
