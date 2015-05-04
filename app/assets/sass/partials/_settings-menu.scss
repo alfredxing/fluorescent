@@ -1,3 +1,6 @@
+$settings-menu-width: 250px;
+$settings-menu-width-handheld: 200px;
+
 .settings-menu {
   height: 100vh;
   width: 0;
@@ -7,7 +10,10 @@
 
   @include transition(width 0.2s ease-in-out);
 
-  &.open {  width: 250px;  }
+  &.open {
+    width: $settings-menu-width;
+    @include respond-to(handhelds) { width: $settings-menu-width-handheld };
+  }
 
   a {
     width: 100%;
@@ -19,7 +25,12 @@
     &:hover {  background: $fl-turqoise;  }
 
     @include link-colors(#fff, #fff, #fff, #fff);
+
+    @include respond-to(handhelds) { padding: 16px };
   }
 }
 
-  .settings-menu-options {  width: 300px;  }
+  .settings-menu-options {
+    width: $settings-menu-width;
+    @include respond-to(handhelds) { width: $settings-menu-width-handheld };
+  }

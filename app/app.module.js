@@ -1,5 +1,6 @@
 angular.module("fluorescent", [
-    'fluorescent.controllers'
+    'fluorescent.controllers',
+    'ng-context-menu'
 ]).config( [
     '$compileProvider',
     function( $compileProvider )

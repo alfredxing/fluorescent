@@ -33,10 +33,14 @@
   .grouping-elements {
     li {
       display: block;
-      padding: 6px 0 0;
+      padding: 9px 0 3px;
 
-      &:hover {
-        background: rgba(0,170,137,0.16);
+      &:hover, &:active, &:focus {
+        background: rgba(238,238,238,1);
+      }
+
+      &.selected {
+        background: rgba(226,226,226,1);
       }
     }
     p, a {
@@ -51,11 +55,15 @@
       padding-left: 20px;
       float: right;
       text-align: right;
+
+      @include respond-to(handhelds) { width: 40% };
     }
     .page-title {
       width: 25%;
       padding-left: 20px;
       float: right;
+
+      @include respond-to(handhelds) { display: none !important; };
     }
     a.annotation-text {
       padding: 0 10px;
@@ -64,6 +72,7 @@
       font-weight: normal;
       text-decoration: none;
       background: $fl-turqoise-light;
+      cursor: pointer;
       &:hover {  background: $fl-turqoise;  }
 
       &.green {

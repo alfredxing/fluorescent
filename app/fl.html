@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href="assets/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <title>fluorescent</title>
@@ -37,18 +38,37 @@
                     <img class="favicon" ng-src="{{ grouping.faviconPath }}">
                     <h2 class="grouping-label">{{ grouping.urlLabel }}</h2>
                 </div>
-                <ul class="grouping-elements" ng-repeat="annotation in grouping.annotations">
-                    <li>
+                <ul class="grouping-elements">
+                    <li context-menu data-target="menu-{{ annotation.id }}" ng-repeat="annotation in grouping.annotations">
                         <p class="annotation-date">{{ annotation.createdOn }}</p>
                         <a href="#" class="page-title">{{ annotation.pageTitle }}</a>
-                        <a href="#" class="annotation-text" ng-style="{background: annotation.color}">{{ annotation.content }}</a>
+                        <a class="annotation-text" ng-style="{background: annotation.color}">{{ annotation.content }}</a>
+
+                        <div class="context-menu" id="menu-{{ annotation.id }}">
+                            <ul role="menu">
+                                <li>
+                                    <a role="menuitem" tabindex="1">
+                                        <i class="fa fa-external-link"></i>
+                                        Go to Annotation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" tabindex="2">
+                                        <i class="fa fa-trash-o"></i>
+                                         Delete Annotation
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </section>
         </div>
     </div>
 
+
     <script type="text/javascript" src="js/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/ng-context-menu.js"></script>
     <script type="text/javascript" src="js/bower_components/classie/classie.js"></script>
 
     <script type="text/javascript" src="app.module.js"></script>
