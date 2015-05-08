@@ -14,15 +14,17 @@ header {
   .fl-logo {
     border-right: $main-border;
     float: left;
-    padding: 11px 20px;
+    width: 80px;
+    background: image-url("icon.svg") no-repeat center;
+    background-size: 38px;
+    cursor: pointer;
 
-    &:hover {  background: #eeeeee;  }
+    &:hover {  background-color: #eeeeee;  }
 
-    @include respond-to(handhelds) { padding: 6px 10px };
-  }
-  .fl-logo-svg {
-    height: 38px;
-    @include respond-to(handhelds) { height: 32px };
+    @include respond-to(handhelds) {
+      width: 60px;
+      background-size: 32px;
+    };
   }
 
   /* Search bar */
@@ -57,6 +59,7 @@ header {
     border-left: $main-border;
     background: image-url("settings-icon.svg") no-repeat center;
     background-size: 20px 20px;
+    cursor: pointer;
 
     &.open {
       background: image-url("settings-close-icon.svg") no-repeat center;

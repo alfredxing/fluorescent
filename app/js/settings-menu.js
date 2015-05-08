@@ -1,5 +1,5 @@
 (function(window) {
-    var settingsButton = document.querySelector(".fl-settings-icon");
+    var settingsButton = document.querySelector(".fl-settings-icon"),
         settingsMenu = document.querySelector(".settings-menu");
 
     settingsButton.addEventListener("click", function() {

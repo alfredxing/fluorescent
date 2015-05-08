@@ -1,13 +1,15 @@
-.annotation-grouping {
+.host-grouping {
   &:first-of-type { @include padding-leader; }
   @include padding-trailer;
+  @include clearfix;
+  position: relative;
 
-  > .grouping-header, .grouping-elements li {
+  > * {
     padding-left: 24px;
     padding-right: 24px;
   }
 }
-  .grouping-header {
+  .host-grouping-header {
     border-bottom: $main-border;
     @include margin-trailer;
 
@@ -21,69 +23,125 @@
       display: inline-block;
     }
   }
-    .grouping-count {
+    .host-count {
       @extend %grouping-text;
       float: right;
     }
-    .favicon {
+    .host-favicon {
       height: 16px;
       display: inline-block;
       margin: 0 5px -3px 0;
     }
-  .grouping-elements {
-    li {
-      display: block;
-      padding: 9px 0 3px;
+  .host-expand, .page-expand {
+    background-color: #f4f4f4;
+    width: 100%;
+    @include clearfix;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
 
-      &:hover, &:active, &:focus {
-        background: rgba(238,238,238,1);
-      }
-
-      &.selected {
-        background: rgba(226,226,226,1);
-      }
+    &:hover {
+      background-color: #eeeeee;
     }
-    p, a {
-      display: inline-block;
-      @include single-line-text;
-    }
-
-    position: relative;
   }
-    .annotation-date {
-      width: 15%;
-      padding-left: 20px;
-      float: right;
-      text-align: right;
-
-      @include respond-to(handhelds) { width: 40% };
+  .host-grouping-column {
+    float: left;
+    width: 450px;
+  }
+  .page-container {
+    margin-bottom: 30px;
+  }
+    .page-header {
+      margin-bottom: 14px;
     }
-    .page-title {
-      width: 25%;
-      padding-left: 20px;
-      float: right;
-
-      @include respond-to(handhelds) { display: none !important; };
-    }
-    a.annotation-text {
-      padding: 0 10px;
-      max-width: 60%;
-      color: $fl-navy;
-      font-weight: normal;
-      text-decoration: none;
-      background: $fl-turqoise-light;
-      cursor: pointer;
-      &:hover {  background: $fl-turqoise;  }
-
-      &.green {
-        background: $fl-green-light;
-        &:hover {  background: $fl-green;  }
+      .page-title {
+        @include adjust-font-size-to(26px);
+        font-weight: bold;
+        color: $link-color;
+        cursor: pointer;
       }
 
-      &.yellow {
-        background: $fl-yellow-light;
-        &:hover {  background: $fl-yellow;  }
+      .page-url {
+        @include adjust-font-size-to(14px);
+        $line-height-shift: 8px;
+        margin-top: -$line-height-shift;
+        padding-bottom: $line-height-shift;
+
+        color: #9b9b9b;
       }
 
+    .page-annotations {  }
+      .annotation-card {
+        padding: 12px 0;
+        position: relative;
+        background-color: $fl-turqoise-light;
+        margin-bottom: 16px;
+        cursor: pointer;
 
-    }
+        @include box-shadow(rgba(0,0,0,0.2) 0px 2px 3px);
+
+        &:hover {  background-color: $fl-turqoise;  }
+
+        &.with-note {
+          background-size: 14px 10px;
+          background-image: image-url("message-pointer.svg");
+          background-repeat: no-repeat;
+          background-position: 24px 36px;
+        }
+
+        &.green {
+          background-color: $fl-green-light;
+
+          &:hover { background-color: $fl-green };
+        }
+
+        &.yellow {
+          background-color: $fl-yellow-light;
+          &:hover { background-color: $fl-yellow };
+        }
+      }
+        .context-menu-button {
+          position: absolute;
+          padding: 0;
+          top: 8px; right: 0px;
+          width: 30px;
+          height: 30px;
+          background: image-url("temp_menu_icon.svg") no-repeat center;
+          background-size: 5px 20px;
+          z-index: 1;
+          cursor: pointer;
+
+          &:hover { background-color: rgba(0,0,0,0.05) }
+        }
+        .source-text {
+          color: $fl-navy;
+          font-weight: normal;
+          text-decoration: none;
+          padding: 0 20px;
+
+          @include single-line-text;
+        }
+        .error-text {
+          @extend .source-text;
+          margin-top: 10px;
+        }
+        .annotation-text {
+          background: #fff;
+          padding: 16px 50px 16px 15px;
+          border-left: 5px solid #eeeeee;
+          margin-top: 10px;
+          position: relative;
+        }
+          .edit-button {
+            position: absolute;
+            top: 10px; right: 5px;
+            width: 30px;
+            height: 30px;
+            background: image-url("pencil-icon.svg") no-repeat center;
+            background-size: 16px 16px;
+            z-index: 1;
+            cursor: pointer;
+
+            &:hover { background-color: rgba(0,0,0,0.05) }
+          }
