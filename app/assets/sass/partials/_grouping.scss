@@ -48,6 +48,7 @@
   .host-grouping-column {
     float: left;
     width: 450px;
+    @include respond-to(handhelds) { float: none; width: auto; }
   }
   .page-container {
     margin-bottom: 30px;
