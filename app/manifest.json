@@ -26,12 +26,15 @@
             "19": "assets/images/icon-19.png",
             "38": "assets/images/icon-38.png"
         },
-        "default_title": "Fluorescent"
+        "default_title": "Fluorescent",
+        "default_popup": "popup.html"
     },
 
     "options_page": "fl.html",
     "permissions": [
         "contextMenus"
     ],
-    "content_security_policy": "script-src 'self'; object-src 'self'"
+    "content_security_policy": "script-src 'self'; object-src 'self'",
+    "web_accessible_resources": [
+        ]
 }
