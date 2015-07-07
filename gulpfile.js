@@ -5,7 +5,7 @@ var gulp    = require('gulp'),
     merge   = require('merge-stream'),
     _       = require('lodash');
 
-gulp.task('jshint', function(){
+gulp.task('jshint', function() {
   return gulp.src('src/app/**/*.js')
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
