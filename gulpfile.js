@@ -41,10 +41,10 @@ gulp.task('chrome:images', function () {
           prefix: "icon-",
           basename: size.toString()
         }))
-        .pipe(gulp.dest('dist/chrome-dev/images'))
+        .pipe(gulp.dest('dist/chrome-dev/images'));
     })
     .reduce(function(a,b) {
-      return merge(a,b)
+      return merge(a,b);
     })
     .value();
 
