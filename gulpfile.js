@@ -5,7 +5,7 @@ var gulp    = require('gulp'),
     merge   = require('merge-stream'),
     _       = require('lodash');
 
-gulp.task('jshint', function(){
+gulp.task('jshint', function() {
   return gulp.src('src/app/**/*.js')
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
@@ -38,8 +38,8 @@ gulp.task('chrome:images', function () {
       return gulp.src('src/app/chrome-extension/images/logo.svg')
         .pipe(plugins.svg2png(size / 100))
         .pipe(plugins.rename({
-          prefix: "icon-",
-          basename: size.toString()
+          basename: "icon-",
+          suffix: size.toString()
         }))
         .pipe(gulp.dest('dist/chrome-dev/images'));
     })
