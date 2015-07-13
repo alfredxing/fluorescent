@@ -25,7 +25,8 @@
     "gulp-svg2png": "^0.3.0",
     "gulp-util": "^3.0.6",
     "jshint-stylish": "^2.0.1",
-    "merge-stream": "^0.1.8"
+    "merge-stream": "^0.1.8",
+    "sinon-chrome": "^0.1.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

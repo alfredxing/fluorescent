@@ -1,11 +1,20 @@
 'use strict';
 
-var dexie = require('dexie');
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  switch(message.type) {
+    case "save":
+      break;
+    case "delete":
+      break;
+    case "find":
+      break;
 
-chrome.runtime.onInstalled.addListener(function(details) {
-  console.log('previousVersion', details.previousVersion);
+    default:
+      console.log("error, unsupported message");
+  }
 });
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-
+chrome.browserAction.onClicked.addListener(function(tab) {
+  var message = {type: "test", url: tab.url};
+  chrome.tabs.sendMessage(tab.id, message);
 });
