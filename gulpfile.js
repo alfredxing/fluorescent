@@ -2,6 +2,7 @@
 
 var gulp    = require('gulp'),
     plugins = require('gulp-load-plugins')(),
+    server  = require('karma').server,
     merge   = require('merge-stream'),
     _       = require('lodash');
 
@@ -53,4 +54,11 @@ gulp.task('chrome:images', function () {
     .pipe(gulp.dest('dist/chrome-dev/images'));
 
   return merge(iconStream, copyStream);
+});
+
+gulp.task('test', function(done) {
+  server.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done);
 });
