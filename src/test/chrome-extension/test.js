@@ -15,7 +15,7 @@ describe('chrome extension', function() {
     var sendResponse = sinon.spy();
     chrome.runtime.onMessage.trigger('unsupported', {}, sendResponse);
 
-    sinon.assert.calledOnce(sendResponse);
+    expect(sendResponse).to.have.been.calledOnce;
   });
 
 });
