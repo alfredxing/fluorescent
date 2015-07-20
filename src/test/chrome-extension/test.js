@@ -5,7 +5,7 @@ window.chrome = chrome;
 
 require('../../app/chrome-extension/scripts/background/index.js');
 
-describe('chrome extension', function() {
+describe('chrome extension wrapper', function() {
 
   it('should runs tests', function() {
     expect(true).to.equal(true);
