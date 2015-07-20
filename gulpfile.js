@@ -32,10 +32,10 @@ gulp.task('chrome:scripts', function() {
 
   return _.chain(bundleNames)
     .map(function(bundleName) {
-    return browserify(sourcePath + bundleName + '/index.js')
-      .bundle()
-      .pipe(source(bundleName + '.js'))
-      .pipe(gulp.dest('dist/chrome-dev/scripts'))
+      return browserify(sourcePath + bundleName + '/index.js')
+        .bundle()
+        .pipe(source(bundleName + '.js'))
+        .pipe(gulp.dest('dist/chrome-dev/scripts'))
     })
     .reduce(function(a,b) {
       return merge(a,b);
