@@ -27,7 +27,26 @@ gulp.task('chrome:styles', function() {
 });
 
 gulp.task('chrome:scripts', function() {
+  var sourcePath = 'src/app/chrome-extension/scripts/';
 
+  var bundleNames = [
+    'background',
+    'content',
+    'options',
+    'popup'
+  ];
+
+  return _.chain(bundleNames)
+    .map(function(bundleName) {
+    return browserify(sourcePath + bundleName + '/index.js')
+      .bundle()
+      .pipe(source(bundleName + '.js'))
+      .pipe(gulp.dest('dist/chrome-dev/scripts'))
+    })
+    .reduce(function(a,b) {
+      return merge(a,b);
+    })
+    .value();
 });
 
 gulp.task('chrome:images', function () {
