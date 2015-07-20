@@ -28,13 +28,7 @@ gulp.task('chrome:styles', function() {
 
 gulp.task('chrome:scripts', function() {
   var sourcePath = 'src/app/chrome-extension/scripts/';
-
-  var bundleNames = [
-    'background',
-    'content',
-    'options',
-    'popup'
-  ];
+  var bundleNames = ['background', 'content', 'options', 'popup'];
 
   return _.chain(bundleNames)
     .map(function(bundleName) {
