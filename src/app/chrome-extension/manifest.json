@@ -1,5 +1,5 @@
 {
-  "name": "flourescent",
+  "name": "fluorescent",
   "version": "1.0.0",
   "description": "chrome extension for highlighting and annotating webpages",
   "manifest_version": 2,

@@ -36,7 +36,8 @@
     "merge-stream": "^0.1.8",
     "phantomjs": "^1.9.17",
     "sinon": "^1.15.4",
-    "sinon-chrome": "^0.2.1"
+    "sinon-chrome": "^0.2.1",
+    "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
     "test": "gulp test"
