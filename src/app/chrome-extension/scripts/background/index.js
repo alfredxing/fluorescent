@@ -29,4 +29,3 @@ module.exports = function() {
     console.log('initialized db');
   });
 }();
-

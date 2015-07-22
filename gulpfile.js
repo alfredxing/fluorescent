@@ -1,10 +1,12 @@
 'use strict';
 
-var gulp    = require('gulp'),
-    plugins = require('gulp-load-plugins')(),
-    server  = require('karma').server,
-    merge   = require('merge-stream'),
-    _       = require('lodash');
+var gulp       = require('gulp'),
+    plugins    = require('gulp-load-plugins')(),
+    browserify = require('browserify'),
+    server     = require('karma').server,
+    source     = require('vinyl-source-stream'),
+    merge      = require('merge-stream'),
+    _          = require('lodash');
 
 gulp.task('jshint', function() {
   return gulp.src('src/app/**/*.js')

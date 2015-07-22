@@ -3,7 +3,6 @@
 var storage    = require('../../app/core/storage.js'),
     Annotation = require('../../app/core/model.js');
 
-
 describe('fluorescent core', function() {
 
   describe('storage module', function() {
@@ -15,13 +14,9 @@ describe('fluorescent core', function() {
         summary = 'quick summary',
         annotation = new Annotation(url, position, host, summary);
 
-    before(function() {
-      storage.init();
-    });
+    before(storage.init);
 
-    afterEach(function() {
-      storage.clear();
-    });
+    afterEach(storage.clear);
 
     it('should be able to save an annotation', function() {
       var createPromise = storage.create(annotation);
@@ -31,7 +26,7 @@ describe('fluorescent core', function() {
     describe('the result from querying for an annotation by url', function() {
 
       beforeEach(function() {
-        storage.create(annotation);
+        return storage.create(annotation);
       });
 
       it('should be an Annotation object', function() {
