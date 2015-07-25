@@ -18,7 +18,7 @@ function init() {
   db = new Dexie("fluorescent");
   db.version(1).stores({annotations: '++,url,position,[url+position]'});
   db.annotations.mapToClass(Annotation);
-  db.open();
+  return db.open();
 }
 
 function create(annotation) {
