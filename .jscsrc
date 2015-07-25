@@ -27,7 +27,5 @@
   "disallowMultipleLineBreaks": true,
   "disallowSpaceAfterObjectKeys": true,
 
-  "validateLineBreaks": "LF",
-
   "excludeFiles": ["node_modules/**", "dist/**"]
 }
