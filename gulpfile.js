@@ -8,10 +8,42 @@ var gulp       = require('gulp'),
     merge      = require('merge-stream'),
     _          = require('lodash');
 
+var paths = {
+  base:    ['src/app/chrome-extension/manifest.json'],
+  scripts: ['src/app/**/*.js'],
+  styles:  ['src/app/chrome-extension/styles/**/*.scss'],
+  images:  ['src/app/chrome-extension/images/**']
+};
+
+gulp.task('default', ['chrome:base', 'chrome:scripts', 'chrome:styles', 'chrome:images']);
+
+gulp.task('watch', function() {
+  gulp.watch(paths.base,    ['chrome:base']);
+  gulp.watch(paths.scripts, ['chrome:scripts']);
+  gulp.watch(paths.styles,  ['chrome:styles']);
+  gulp.watch(paths.images,  ['chrome:images']);
+});
+
+gulp.task('lint', ['jshint', 'jscs']);
+
 gulp.task('jshint', function() {
   return gulp.src('src/app/**/*.js')
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('jscs', function() {
+  return gulp.src('src/app/**/*.js')
+    .pipe(plugins.jscs())
+    .on('error', plugins.util.noop)
+    .pipe(plugins.jscsStylish());
+});
+
+gulp.task('test', function(done) {
+  server.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done);
 });
 
 gulp.task('chrome:base', function() {
@@ -28,7 +60,7 @@ gulp.task('chrome:styles', function() {
     .pipe(gulp.dest('dist/chrome-dev/styles'));
 });
 
-gulp.task('chrome:scripts', function() {
+gulp.task('chrome:scripts', ['lint', 'test'], function() {
   var sourcePath = 'src/app/chrome-extension/scripts/';
   var bundleNames = ['background', 'content', 'options', 'popup'];
 
@@ -69,11 +101,4 @@ gulp.task('chrome:images', function () {
     .pipe(gulp.dest('dist/chrome-dev/images'));
 
   return merge(iconStream, copyStream);
-});
-
-gulp.task('test', function(done) {
-  server.start({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true
-  }, done);
 });

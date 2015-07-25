@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function() {
+module.exports = (function() {
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    switch(message.type) {
+    switch (message.type) {
       case "illuminate":
         break;
       case "darken":
@@ -14,10 +14,11 @@ module.exports = function() {
         break;
 
       case "test":
-        console.log(message.url); break;
+        console.log(message.url);
+        break;
 
       default:
         console.log("error, unsupported message");
     }
   });
-}();
+})();

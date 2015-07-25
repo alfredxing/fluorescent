@@ -1,7 +1,7 @@
 'use strict';
 
 var Dexie      = require('dexie'),
-    Annotation = require('./model.js');
+    Annotation = require('./annotation.js');
 
 var db;
 

@@ -2,11 +2,12 @@
 
 var storage = require('../../../core/storage.js');
 
-module.exports = function() {
+module.exports = (function() {
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    switch(message.type) {
+    switch (message.type) {
       case "save":
-        storage.create(message.annotation); break;
+        storage.create(message.annotation);
+        break;
       case "delete":
         break;
       case "find":
@@ -28,4 +29,4 @@ module.exports = function() {
     storage.init();
     console.log('initialized db');
   });
-}();
+})();

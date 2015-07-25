@@ -1,7 +1,7 @@
 'use strict';
 
 var storage    = require('../../app/core/storage.js'),
-    Annotation = require('../../app/core/model.js');
+    Annotation = require('../../app/core/annotation.js');
 
 describe('fluorescent core', function() {
 
