@@ -1,42 +1,33 @@
 'use strict';
 
-var Dexie      = require('dexie'),
-    Annotation = require('./annotation.js');
+import Dexie from 'dexie';
+import Annotation from './annotation.js';
 
-var db;
+export default class Storage {
+  constructor() {
+    this.db = new Dexie("fluorescent");
+    this.db.version(1).stores({annotations: '++,url,position,[url+position]'});
+    this.db.annotations.mapToClass(Annotation);
+    this.db.open();
+  }
 
-module.exports = {
-  init:      init,
-  create:    create,
-  find:      find,
-  findByUrl: findByUrl,
-  findAll:   findAll,
-  clear:     clear
-};
+  create(annotation) {
+    return this.db.annotations.put(annotation);
+  }
 
-function init() {
-  db = new Dexie("fluorescent");
-  db.version(1).stores({annotations: '++,url,position,[url+position]'});
-  db.annotations.mapToClass(Annotation);
-  return db.open();
-}
+  find(params) {
 
-function create(annotation) {
-  return db.annotations.put(annotation);
-}
+  }
 
-function find(params) {
+  findByUrl(url) {
+    return this.db.annotations.where('url').equalsIgnoreCase(url);
+  }
 
-}
+  findAll() {
+    return this.db.annotations.toCollection();
+  }
 
-function findByUrl(url) {
-  return db.annotations.where('url').equalsIgnoreCase(url);
-}
-
-function findAll() {
-  return db.annotations.toCollection();
-}
-
-function clear() {
-  return db.annotations.clear();
+  clear() {
+    return this.db.annotations.clear();
+  }
 }

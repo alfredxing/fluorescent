@@ -1,32 +1,31 @@
 'use strict';
 
-var storage = require('../../../core/storage.js');
+import Storage from '../../../core/storage.js';
 
-module.exports = (function() {
-  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    switch (message.type) {
-      case "save":
-        storage.create(message.annotation);
-        break;
-      case "delete":
-        break;
-      case "find":
-        break;
+let storage = new Storage();
 
-      default:
-        console.log("error, unsupported message");
-    }
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (message.type) {
+    case "save":
+      storage.create(message.annotation);
+      break;
+    case "delete":
+      break;
+    case "find":
+      break;
 
-    sendResponse();
-  });
+    default:
+      console.log("error, unsupported message");
+  }
 
-  chrome.browserAction.onClicked.addListener(function(tab) {
-    var message = {type: "test", url: tab.url};
-    chrome.tabs.sendMessage(tab.id, message);
-  });
+  sendResponse();
+});
 
-  chrome.runtime.onInstalled.addListener(function(details) {
-    storage.init();
-    console.log('initialized db');
-  });
-})();
+chrome.browserAction.onClicked.addListener((tab) => {
+  let message = {type: "test", url: tab.url};
+  chrome.tabs.sendMessage(tab.id, message);
+});
+
+chrome.runtime.onInstalled.addListener((details) => {
+  console.log('starting up');
+});

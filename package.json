@@ -32,6 +32,7 @@
     "jscs": "^1.13.1",
     "jshint-stylish": "^2.0.1",
     "karma": "^0.12.37",
+    "karma-babel-preprocessor": "^5.2.1",
     "karma-browserify": "^4.2.1",
     "karma-chai-plugins": "^0.6.0",
     "karma-chrome-launcher": "^0.2.0",

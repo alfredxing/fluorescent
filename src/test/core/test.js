@@ -1,41 +1,39 @@
 'use strict';
 
-var storage    = require('../../app/core/storage.js'),
-    Annotation = require('../../app/core/annotation.js');
+import Storage from '../../app/core/storage.js';
+import Annotation from '../../app/core/annotation.js';
 
-describe('fluorescent core', function() {
+describe('fluorescent core', () => {
 
-  describe('storage module', function() {
+  describe('storage module', () => {
 
     // sample data
-    var url = 'http://fluorescent.io/',
+    let url = 'http://fluorescent.io/',
         position = '5:15:fake-serialization2',
         host = 'fluorescent.io',
         summary = 'quick summary',
         annotation = new Annotation(url, position, host, summary);
 
-    before(storage.init);
+    let storage = new Storage();
 
-    afterEach(storage.clear);
+    afterEach(() => storage.clear());
 
-    it('should be able to save an annotation', function() {
-      var createPromise = storage.create(annotation);
+    it('should be able to save an annotation', () => {
+      let createPromise = storage.create(annotation);
       return expect(createPromise).to.eventually.be.fulfilled;
     });
 
-    describe('the result from querying for an annotation by url', function() {
+    describe('the result from querying for an annotation by url', () => {
 
-      beforeEach(function() {
-        return storage.create(annotation);
-      });
+      beforeEach(() => storage.create(annotation));
 
-      it('should be an Annotation object', function() {
-        var result = storage.findByUrl(url).first();
+      it('should be an Annotation object', () => {
+        let result = storage.findByUrl(url).first();
         return expect(result).to.eventually.be.an.instanceof(Annotation);
       });
 
-      it('should be identical to the Annotation object before it was saved', function() {
-        var result = storage.findByUrl(url).first();
+      it('should be identical to the Annotation object before it was saved', () => {
+        let result = storage.findByUrl(url).first();
         return expect(result).to.eventually.deep.equal(annotation);
       });
 
