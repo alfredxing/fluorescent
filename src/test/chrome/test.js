@@ -3,7 +3,7 @@
 var chrome = require('sinon-chrome');
 window.chrome = chrome;
 
-require('../../app/chrome-extension/scripts/background/index.js');
+require('../../app/chrome/scripts/background/index.js');
 
 describe('chrome extension wrapper', function() {
 
