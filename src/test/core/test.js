@@ -1,7 +1,7 @@
 'use strict';
 
-import Storage from '../../app/core/storage.js';
-import Annotation from '../../app/core/annotation.js';
+import Storage from '../../app/core/Storage.js';
+import Annotation from '../../app/core/Annotation.js';
 
 describe('fluorescent core', () => {
 

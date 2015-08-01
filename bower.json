@@ -1,0 +1,21 @@
+{
+  "name": "fluorescent",
+  "version": "1.0.0",
+  "homepage": "https://github.com/tyangliu/fluorescent",
+  "authors": [
+    "Andrea Yeo",
+    "Thomas Liu"
+  ],
+  "license": "GNU",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./dist/chrome-dev/lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chrome-promise": "~1.0.3"
+  }
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 import Dexie from 'dexie';
-import Annotation from './annotation.js';
+import Annotation from './Annotation.js';
 
 export default class Storage {
   constructor() {

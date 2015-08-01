@@ -4,10 +4,10 @@ var gulp   = require('gulp'),
     config = require('../config');
 
 gulp.task('base', function() {
-  var manifestSrc = config.base.manifestSrc,
-      dest        = config.base.dest;
+  var src  = config.base.src,
+      dest = config.base.dest;
 
   // copy manifest to dist
-  return gulp.src(manifestSrc)
+  return gulp.src(src + '*')
     .pipe(gulp.dest(dest));
 });

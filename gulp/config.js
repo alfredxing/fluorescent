@@ -2,15 +2,22 @@
 
 module.exports = {
   base: {
-    manifestSrc: 'src/app/chrome/manifest.json',
+    src: 'src/app/chrome/',
     dest: './dist/chrome-dev/',
 
     prod: {
       dest: './dist/chrome/'
     }
   },
+  bower: {
+    dest: './dist/chrome-dev/lib/',
+
+    prod: {
+      dest: './dist/chrome/lib/'
+    }
+  },
   styles: {
-    src: './src/app/chrome/styles/styles.scss',
+    src: './src/app/chrome/styles/*.scss',
     dest: './dist/chrome-dev/styles/',
 
     prod: {

@@ -1,6 +1,6 @@
 'use strict';
 
-import Storage from '../../../core/storage.js';
+import Storage from '../../../core/Storage.js';
 
 let storage = new Storage();
 
@@ -19,11 +19,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   sendResponse();
-});
-
-chrome.browserAction.onClicked.addListener((tab) => {
-  let message = {type: "test", url: tab.url};
-  chrome.tabs.sendMessage(tab.id, message);
 });
 
 chrome.runtime.onInstalled.addListener((details) => {
