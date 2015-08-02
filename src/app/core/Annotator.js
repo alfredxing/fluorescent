@@ -9,8 +9,11 @@ export default class Annotator {
     this.document = window.document;
     this._url = window.location.href;
     this._host = window.location.hostname;
-    this._annotations = annotations;
+
     this._listeners = [];
+
+    this._annotations = [];
+    annotations.forEach(annotation => this._addAnnotation(annotation));
   }
 
   get url() {
@@ -25,7 +28,8 @@ export default class Annotator {
 
   uncap() {
     return new Promise((resolve, reject) => this._addListener(() => {
-      resolve(this._highlight());
+      let annotation = this._highlight();
+      resolve(this._addAnnotation(annotation));
       this.cap();
     }));
   }
@@ -35,12 +39,24 @@ export default class Annotator {
     this._clearListeners();
   }
 
+  edit(annotation) {
+    /* public API to modify an annotation, return a promise with the updated
+       annotation object so additional steps can be taken (e.g. updating db
+       records) */
+  }
+
+  erase(annotation) {
+    /* public API to delete an annotation, return a promise with the deleted
+       annotation object so additional steps can be taken (e.g. updating db
+       records) */
+  }
+
   illuminate() {
-    console.log('illuminating');
+    /* public API to show all annotations */
   }
 
   darken() {
-    console.log('darkening');
+    /* public API to hide all annotations */
   }
 
   _addListener(listener) {
@@ -55,6 +71,35 @@ export default class Annotator {
       let listener = this._listeners.pop();
       this.document.removeEventListener('mouseup', listener);
     }
+  }
+
+  _addAnnotation(annotation) {
+    if (annotation) {
+      this._annotations.push(annotation);
+      // TODO: logic to refresh DOM
+    }
+
+    return annotation;
+  }
+
+  _editAnnotation(annotation) {
+    /* private method to edit an annotation, and update the DOM accordingly,
+       returns the updated annotation */
+  }
+
+  _removeAnnotation(annotation) {
+    /* private method to delete an annotation, and update the DOM accordingly,
+       returns the deleted annotation */
+  }
+
+  _showAnnotation(annotation) {
+    /* private method to make a single annotation visible in the DOM, called by
+       this.illuminate() */
+  }
+
+  _hideAnnotation(annotation) {
+    /* private method to hide a single annotation from the DOM, called by
+       this.darken()  */
   }
 
   _highlight() {
