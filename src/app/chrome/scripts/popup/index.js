@@ -11,7 +11,7 @@ uncapButton.addEventListener('click', () =>
   }).then(tabs =>
     chrome.tabs.sendMessage(tabs[0].id, { type: 'uncap' })
   )
-)
+);
 
 let clearButton = document.getElementById('clear');
 

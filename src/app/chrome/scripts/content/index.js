@@ -21,26 +21,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('message received: ' + message.type);
 
   switch (message.type) {
-    case "illuminate":
+    case 'illuminate':
       break;
-    case "darken":
+    case 'darken':
       break;
 
-    case "uncap":
+    case 'uncap':
       annotator.uncap().then(annotation =>
         chrome.promise.runtime.sendMessage({
           type: 'save',
           annotation
         })
-      ).then((result) =>
+      ).then(result =>
         console.log('annotation saved with id: ' + result)
       );
       break;
-    case "cap":
+    case 'cap':
       annotator.cap();
       break;
 
     default:
-      console.log("error, unsupported message");
+      console.log('error, unsupported message');
   }
 });
