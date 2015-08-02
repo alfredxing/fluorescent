@@ -49,7 +49,7 @@ module.exports = {
     }
   },
   watch: {
-    base:    ['src/app/chrome/manifest.json'],
+    base:    ['src/app/chrome/*'],
     scripts: ['src/app/**/*.js'],
     styles:  ['src/app/chrome/styles/**/*.scss'],
     images:  ['src/app/chrome/images/**']
