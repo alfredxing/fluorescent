@@ -59,20 +59,6 @@ export default class Annotator {
     /* public API to hide all annotations */
   }
 
-  _addListener(listener) {
-    if (listener && this._listeners.length === 0) {
-      this._listeners.push(listener);
-      this.document.addEventListener('mouseup', listener);
-    }
-  }
-
-  _clearListeners() {
-    while (this._listeners.length) {
-      let listener = this._listeners.pop();
-      this.document.removeEventListener('mouseup', listener);
-    }
-  }
-
   _addAnnotation(annotation) {
     if (annotation) {
       this._annotations.push(annotation);
@@ -135,6 +121,20 @@ export default class Annotator {
 
   _abbreviate(str, length) {
     return str.trim().replace(/\s+/g, ' ').substr(0, length);
+  }
+
+  _addListener(listener) {
+    if (listener && this._listeners.length === 0) {
+      this._listeners.push(listener);
+      this.document.addEventListener('mouseup', listener);
+    }
+  }
+
+  _clearListeners() {
+    while (this._listeners.length) {
+      let listener = this._listeners.pop();
+      this.document.removeEventListener('mouseup', listener);
+    }
   }
 
 }
