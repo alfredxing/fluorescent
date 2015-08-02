@@ -5,10 +5,10 @@ import Annotation from './Annotation';
 
 export default class Annotator {
 
-  constructor(document, options = {}) {
-    this.document = document;
-    this._url = options.url;
-    this._host = options.host;
+  constructor(window, options = {}) {
+    this.document = window.document;
+    this._url = window.location.href;
+    this._host = window.location.hostname;
     this._listeners = [];
   }
 
