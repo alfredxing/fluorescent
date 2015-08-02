@@ -52,11 +52,15 @@ export default class Annotator {
   }
 
   illuminate() {
-    /* public API to show all annotations */
+    this._annotations.forEach(annotation =>
+      this._showAnnotation(annotation)
+    );
   }
 
   darken() {
-    /* public API to hide all annotations */
+    this._annotations.forEach(annotation =>
+      this._hideAnnotation(annotation)
+    );
   }
 
   _addAnnotation(annotation) {
