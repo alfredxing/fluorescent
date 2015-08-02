@@ -14,8 +14,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case "uncap":
-      annotator.uncap().then((text) =>
-        console.log('click promise resolved: ' + text)
+      annotator.uncap().then((annotation) =>
+        console.log('click promise resolved: ' + JSON.stringify(annotation))
       );
       break;
     case "cap":

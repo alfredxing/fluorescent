@@ -12,30 +12,11 @@ export default class Annotator {
     this._listeners = [];
   }
 
-  _highlight() {
-    let selection = rangy.getSelection();
-
-    // TODO: attempt to get closest node with id, otherwise default to document
-    let containerNode = null || this.document;
-
-    let text     = selection.toString(),
-        bookmark = selection.getBookmark(containerNode);
-
-    return text;
+  get url() {
+    return this._url;
   }
-
-  _addListener(listener) {
-    if (listener) {
-      this._listeners.push(listener);
-      this.document.addEventListener('mouseup', listener);
-    }
-  }
-
-  _clearListeners() {
-    while (this._listeners.length) {
-      let listener = this._listeners.pop();
-      this.document.removeEventListener('mouseup', listener);
-    }
+  get host() {
+    return this._host;
   }
 
   uncap() {
@@ -56,6 +37,55 @@ export default class Annotator {
 
   darken() {
     console.log('darkening');
+  }
+
+  _addListener(listener) {
+    if (listener && this._listeners.length === 0) {
+      this._listeners.push(listener);
+      this.document.addEventListener('mouseup', listener);
+    }
+  }
+
+  _clearListeners() {
+    while (this._listeners.length) {
+      let listener = this._listeners.pop();
+      this.document.removeEventListener('mouseup', listener);
+    }
+  }
+
+  _highlight() {
+    let selection = rangy.getSelection(),
+        containerNode = null || this.document;
+
+    if (selection.isCollapsed) { return null; }
+
+    let url = this.url,
+        position = this._serialize(selection, containerNode),
+        host = this.host,
+        summary = this._abbreviate(selection.toString(), 200);
+
+    selection.removeAllRanges();
+
+    return new Annotation(url, position, host, summary);
+  }
+
+  _serialize(selection, containerNode) {
+    let ranges = selection.getAllRanges(),
+        nodeId = this._getNodeIdentifier(containerNode);
+
+    return ranges
+      .map((range) => range.getBookmark(containerNode))
+      .filter((bookmark) => bookmark.start !== bookmark.end)
+      .map((bookmark) => bookmark.start + ':' + bookmark.end + ':' + nodeId)
+      .reduce((a, b) => a + '$' + b);
+  }
+
+  _getNodeIdentifier(node) {
+    return (node && node.nodeType == 1 && node.id) ? node.id : '/';
+  }
+
+  _abbreviate(str, length) {
+    return str.trim().substr(0, length).replace(/\s+/g, ' ');
   }
 
 }
