@@ -28,12 +28,12 @@ describe('fluorescent core', () => {
       beforeEach(() => storage.create(annotation));
 
       it('should be an Annotation object', () => {
-        let result = storage.findByUrl(url).first();
+        let result = storage.findByUrl(url).then(result => result[0]);
         return expect(result).to.eventually.be.an.instanceof(Annotation);
       });
 
       it('should be identical to the Annotation object before it was saved', () => {
-        let result = storage.findByUrl(url).first();
+        let result = storage.findByUrl(url).then(result => result[0]);
         return expect(result).to.eventually.deep.equal(annotation);
       });
 

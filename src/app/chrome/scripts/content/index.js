@@ -2,7 +2,20 @@
 
 import Annotator from '../../../core/Annotator';
 
-let annotator = new Annotator(window);
+chrome.promise = new ChromePromise();
+
+let annotator;
+
+function init() {
+  return chrome.promise.runtime.sendMessage({
+    type: 'findByUrl',
+    url: window.location.href
+  }).then(annotations =>
+    annotator = new Annotator(window, annotations)
+  );
+}
+
+init(); window.addEventListener('hashchange', init);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('message received: ' + message.type);
@@ -25,8 +38,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     default:
       console.log("error, unsupported message");
   }
-});
-
-window.addEventListener('hashchange', () => {
-  annotator = new Annotator(window);
 });

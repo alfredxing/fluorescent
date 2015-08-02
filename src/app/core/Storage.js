@@ -21,11 +21,11 @@ export default class Storage {
   }
 
   findByUrl(url) {
-    return this.db.annotations.where('url').equalsIgnoreCase(url);
+    return this.db.annotations.where('url').equalsIgnoreCase(url).toArray();
   }
 
   findAll() {
-    return this.db.annotations.toCollection();
+    return this.db.annotations.toCollection().toArray();
   }
 
   clear() {
