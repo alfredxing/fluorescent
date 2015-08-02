@@ -14,14 +14,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case "uncap":
-      annotator.uncap();
+      annotator.uncap().then((text) =>
+        console.log('click promise resolved: ' + text)
+      );
       break;
     case "cap":
       annotator.cap();
-      break;
-
-    case "test":
-      console.log(message.url);
       break;
 
     default:
