@@ -4,6 +4,7 @@ import Dexie from 'dexie';
 import Annotation from './Annotation.js';
 
 export default class Storage {
+
   constructor() {
     this.db = new Dexie("fluorescent");
     this.db.version(1).stores({annotations: '++,url,position,[url+position]'});
@@ -30,4 +31,5 @@ export default class Storage {
   clear() {
     return this.db.annotations.clear();
   }
+
 }

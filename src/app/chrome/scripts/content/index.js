@@ -2,7 +2,7 @@
 
 import Annotator from '../../../core/Annotator';
 
-let annotator = new Annotator(document);
+let annotator = new Annotator(window);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('message received: ' + message.type);
@@ -25,4 +25,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     default:
       console.log("error, unsupported message");
   }
+});
+
+window.addEventListener('hashchange', () => {
+  annotator = new Annotator(window);
 });
