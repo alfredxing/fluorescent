@@ -2,12 +2,21 @@
 
 chrome.promise = new ChromePromise();
 
-let button = document.getElementById('click-me');
+let uncapButton = document.getElementById('uncap');
 
-button.addEventListener('click', () =>
+uncapButton.addEventListener('click', () =>
   chrome.promise.tabs.query({
     currentWindow: true,
     active: true
-  })
-  .then(tabs => chrome.tabs.sendMessage(tabs[0].id, { type: 'uncap' }))
+  }).then(tabs =>
+    chrome.tabs.sendMessage(tabs[0].id, { type: 'uncap' })
+  )
+)
+
+let clearButton = document.getElementById('clear');
+
+clearButton.addEventListener('click', () =>
+  chrome.promise.runtime.sendMessage({ type: 'clear' }).then(() =>
+    console.log('db cleared')
+  )
 );
