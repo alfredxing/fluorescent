@@ -27,8 +27,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case "uncap":
-      annotator.uncap().then((annotation) =>
-        console.log('click promise resolved: ' + JSON.stringify(annotation))
+      annotator.uncap().then(annotation =>
+        chrome.promise.runtime.sendMessage({
+          type: 'save',
+          annotation
+        })
+      ).then((result) =>
+        console.log('annotation saved with id: ' + result)
       );
       break;
     case "cap":

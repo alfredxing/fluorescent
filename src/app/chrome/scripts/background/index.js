@@ -20,6 +20,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse(result)
       );
       break;
+    case 'clear':
+      storage.clear().then(() =>
+        sendResponse()
+      );
+      break;
     default:
       console.log('error, unsupported message');
       sendResponse('unsupported');
