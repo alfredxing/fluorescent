@@ -85,7 +85,7 @@ export default class Annotator {
   }
 
   _abbreviate(str, length) {
-    return str.trim().substr(0, length).replace(/\s+/g, ' ');
+    return str.trim().replace(/\s+/g, ' ').substr(0, length);
   }
 
 }
