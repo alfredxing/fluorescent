@@ -10,9 +10,16 @@ function init() {
   return chrome.promise.runtime.sendMessage({
     type: 'findByUrl',
     url: window.location.href
-  }).then(annotations =>
-    annotator = new Annotator(window, annotations)
-  );
+  }).then(annotations => {
+    annotator = new Annotator(window, annotations);
+    attachListeners(annotator);
+  });
+}
+
+function attachListeners(annotator) {
+  annotator.added.add(annotation => true); // TODO
+  annotator.removed.add(annotation => true); // TODO
+  annotator.edited.add(annotation => true); // TODO
 }
 
 init(); window.addEventListener('hashchange', init);

@@ -1,18 +1,25 @@
 'use strict';
 
 import rangy from 'rangy';
+import utils from './utils/utils';
+import Broadcaster from './Broadcaster';
 import Annotation from './Annotation';
+import AnnotationApplier from './AnnotationApplier';
 
-export default class Annotator {
+export default class Annotator extends Broadcaster {
 
   constructor(window, annotations, options = {}) {
+    super();
+
     this.document = window.document;
     this._url = window.location.href;
     this._host = window.location.hostname;
 
-    this._listeners = [];
+    this._startSignals('added', 'removed', 'edited');
 
-    this._annotations = [];
+    this._highlightListeners = [];
+
+    this._annotationAppliers = [];
     annotations.forEach(annotation => this._addAnnotation(annotation));
   }
 
@@ -22,12 +29,9 @@ export default class Annotator {
   get host() {
     return this._host;
   }
-  get annotations() {
-    return this._annotations;
-  }
 
   uncap() {
-    return new Promise((resolve, reject) => this._addListener(() => {
+    return new Promise((resolve, reject) => this._addHighlightListener(() => {
       let annotation = this._highlight();
       resolve(this._addAnnotation(annotation));
       this.cap();
@@ -36,60 +40,44 @@ export default class Annotator {
 
   cap() {
     console.log('capped');
-    this._clearListeners();
+    this._clearHighlightListeners();
   }
 
   edit(annotation) {
-    /* public API to modify an annotation, return a promise with the updated
-       annotation object so additional steps can be taken (e.g. updating db
-       records) */
+
   }
 
   erase(annotation) {
-    /* public API to delete an annotation, return a promise with the deleted
-       annotation object so additional steps can be taken (e.g. updating db
-       records) */
+
   }
 
   illuminate() {
-    this._annotations.forEach(annotation =>
-      this._showAnnotation(annotation)
-    );
+    this._annotationAppliers.forEach(applier => applier.show());
   }
 
   darken() {
-    this._annotations.forEach(annotation =>
-      this._hideAnnotation(annotation)
-    );
+    this._annotationAppliers.forEach(applier => applier.hide());
   }
 
   _addAnnotation(annotation) {
     if (annotation) {
-      this._annotations.push(annotation);
-      // TODO: logic to refresh DOM
+      let applier = new AnnotationApplier(annotation);
+
+      applier.removed.add(this._handleChildRemoved);
+      applier.edited.add(this._handleChildEdited);
+
+      this._annotationAppliers.push(applier);
     }
 
     return annotation;
   }
 
   _editAnnotation(annotation) {
-    /* private method to edit an annotation, and update the DOM accordingly,
-       returns the updated annotation */
+
   }
 
   _removeAnnotation(annotation) {
-    /* private method to delete an annotation, and update the DOM accordingly,
-       returns the deleted annotation */
-  }
 
-  _showAnnotation(annotation) {
-    /* private method to make a single annotation visible in the DOM, called by
-       this.illuminate() */
-  }
-
-  _hideAnnotation(annotation) {
-    /* private method to hide a single annotation from the DOM, called by
-       this.darken()  */
   }
 
   _highlight() {
@@ -99,46 +87,36 @@ export default class Annotator {
     if (selection.isCollapsed) { return null; }
 
     let url = this.url,
-        position = this._serialize(selection, containerNode),
+        position = utils.serialize(selection, containerNode),
         host = this.host,
-        summary = this._abbreviate(selection.toString(), 200);
+        summary = utils.abbreviate(selection.toString(), 200);
 
     selection.removeAllRanges();
 
     return new Annotation(url, position, host, summary);
   }
 
-  _serialize(selection, containerNode) {
-    let ranges = selection.getAllRanges(),
-        nodeId = this._getNodeIdentifier(containerNode);
-
-    return ranges
-      .map((range) => range.getBookmark(containerNode))
-      .filter((bookmark) => bookmark.start !== bookmark.end)
-      .map((bookmark) => bookmark.start + ':' + bookmark.end + ':' + nodeId)
-      .reduce((a, b) => a + '$' + b);
-  }
-
-  _getNodeIdentifier(node) {
-    return (node && node.nodeType == 1 && node.id) ? node.id : '/';
-  }
-
-  _abbreviate(str, length) {
-    return str.trim().replace(/\s+/g, ' ').substr(0, length);
-  }
-
-  _addListener(listener) {
-    if (listener && this._listeners.length === 0) {
-      this._listeners.push(listener);
+  _addHighlightListener(listener) {
+    if (listener && this._highlightListeners.length === 0) {
+      this._highlightListeners.push(listener);
       this.document.addEventListener('mouseup', listener);
     }
   }
 
-  _clearListeners() {
-    while (this._listeners.length) {
-      let listener = this._listeners.pop();
+  _clearHighlightListeners() {
+    while (this._highlightListeners.length) {
+      let listener = this._highlightListeners.pop();
       this.document.removeEventListener('mouseup', listener);
     }
+  }
+
+  _handleChildRemoved(annotation) {
+    // TODO: find and delete applier for annotation
+    this.removed.dispatch(annotation);
+  }
+
+  _handleChildEdited(annotation) {
+    this.edited.dispatch(annotation);
   }
 
 }
