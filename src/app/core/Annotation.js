@@ -7,6 +7,7 @@ export default class Annotation {
     this.position = position;
     this.host = host;
     this.summary = summary;
+    this.timestamp = Date.now();
   }
 
 }
