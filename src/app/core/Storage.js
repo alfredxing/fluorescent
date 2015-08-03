@@ -7,7 +7,7 @@ export default class Storage {
 
   constructor() {
     this.db = new Dexie("fluorescent");
-    this.db.version(1).stores({annotations: '++,url,position,[url+position]'});
+    this.db.version(1).stores({annotations: '++,url,position,&[url+position]'});
     this.db.annotations.mapToClass(Annotation);
     this.db.open();
   }
