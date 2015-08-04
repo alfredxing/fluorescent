@@ -4,10 +4,11 @@ import Broadcaster from './Broadcaster';
 
 export default class AnnotationApplier extends Broadcaster {
 
-  constructor(annotation) {
+  constructor(window, annotation) {
     super();
-
+    this.document = window.document;
     this._annotation = annotation;
+
     this._startSignals('removed', 'edited');
   }
 

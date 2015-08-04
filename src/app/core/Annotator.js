@@ -1,46 +1,34 @@
 'use strict';
 
-import rangy from 'rangy';
 import utils from './utils/utils';
 import Broadcaster from './Broadcaster';
-import Annotation from './Annotation';
+import Highlighter from './Highlighter';
 import AnnotationApplier from './AnnotationApplier';
 
 export default class Annotator extends Broadcaster {
 
   constructor(window, annotations, options = {}) {
     super();
-
-    this.document = window.document;
-    this._url = window.location.href;
-    this._host = window.location.hostname;
-
-    this._startSignals('added', 'removed', 'edited');
-
-    this._highlightListeners = [];
+    this.window = window;
+    this.highlighter = new Highlighter(window);
 
     this._annotationAppliers = [];
     annotations.forEach(annotation => this._addAnnotation(annotation));
-  }
 
-  get url() {
-    return this._url;
-  }
-  get host() {
-    return this._host;
+    this._startSignals('added', 'removed', 'edited');
   }
 
   uncap() {
-    return new Promise((resolve, reject) => this._addHighlightListener(() => {
-      let annotation = this._highlight();
-      resolve(this._addAnnotation(annotation));
-      this.cap();
-    }));
+    this.highlighter.uncap(annotation => {
+      this._addAnnotation(annotation);
+      this.added.dispatch(annotation);
+      this.highlighter.cap();
+    });
   }
 
   cap() {
     console.log('capped');
-    this._clearHighlightListeners();
+    this.highlighter.cap();
   }
 
   edit(annotation) {
@@ -61,7 +49,7 @@ export default class Annotator extends Broadcaster {
 
   _addAnnotation(annotation) {
     if (annotation) {
-      let applier = new AnnotationApplier(annotation);
+      let applier = new AnnotationApplier(this.window, annotation);
 
       applier.removed.add(this._handleChildRemoved);
       applier.edited.add(this._handleChildEdited);
@@ -78,36 +66,6 @@ export default class Annotator extends Broadcaster {
 
   _removeAnnotation(annotation) {
 
-  }
-
-  _highlight() {
-    let selection = rangy.getSelection(),
-        containerNode = null || this.document;
-
-    if (selection.isCollapsed) { return null; }
-
-    let url = this.url,
-        position = utils.serialize(selection, containerNode),
-        host = this.host,
-        summary = utils.abbreviate(selection.toString(), 200);
-
-    selection.removeAllRanges();
-
-    return new Annotation(url, position, host, summary);
-  }
-
-  _addHighlightListener(listener) {
-    if (listener && this._highlightListeners.length === 0) {
-      this._highlightListeners.push(listener);
-      this.document.addEventListener('mouseup', listener);
-    }
-  }
-
-  _clearHighlightListeners() {
-    while (this._highlightListeners.length) {
-      let listener = this._highlightListeners.pop();
-      this.document.removeEventListener('mouseup', listener);
-    }
   }
 
   _handleChildRemoved(annotation) {

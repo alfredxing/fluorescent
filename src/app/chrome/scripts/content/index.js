@@ -16,13 +16,39 @@ function init() {
   });
 }
 
-function attachListeners(annotator) {
-  annotator.added.add(annotation => true); // TODO
-  annotator.removed.add(annotation => true); // TODO
-  annotator.edited.add(annotation => true); // TODO
-}
-
 init(); window.addEventListener('hashchange', init);
+
+let listeners = {
+
+  added(annotation) {
+    chrome.promise.runtime.sendMessage({
+      type: 'save',
+      annotation
+    }).then(id =>
+        console.log('annotation saved with id: ' + id)
+    );
+  },
+
+  removed(annotation) {
+    console.log('annotation deleted: ' + JSON.stringify(annotation));
+  },
+
+  edited(annotation) {
+    chrome.promise.runtime.sendMessage({
+      type: 'save',
+      annotation
+    }).then(id =>
+      console.log('annotation saved with id: ' + id)
+    );
+  }
+
+};
+
+function attachListeners(annotator) {
+  annotator.added.add(listeners.added);
+  annotator.removed.add(listeners.removed);
+  annotator.edited.add(listeners.edited);
+}
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('message received: ' + message.type);
@@ -34,14 +60,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       break;
 
     case 'uncap':
-      annotator.uncap().then(annotation =>
-        chrome.promise.runtime.sendMessage({
-          type: 'save',
-          annotation
-        })
-      ).then(result =>
-        console.log('annotation saved with id: ' + result)
-      );
+      annotator.uncap();
       break;
     case 'cap':
       annotator.cap();
