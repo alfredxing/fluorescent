@@ -25,7 +25,7 @@ let listeners = {
       type: 'save',
       annotation
     }).then(id =>
-        console.log('annotation saved with id: ' + id)
+      console.log('annotation saved with id: ' + id)
     );
   },
 
