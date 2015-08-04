@@ -55,8 +55,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   switch (message.type) {
     case 'illuminate':
+      annotator.illuminate();
       break;
     case 'darken':
+      annotator.darken();
       break;
 
     case 'uncap':

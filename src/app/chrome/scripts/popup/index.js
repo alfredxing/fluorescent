@@ -2,21 +2,27 @@
 
 chrome.promise = new ChromePromise();
 
-let uncapButton = document.getElementById('uncap');
-
-uncapButton.addEventListener('click', () =>
+function sendToActiveTab(message) {
   chrome.promise.tabs.query({
     currentWindow: true,
     active: true
   }).then(tabs =>
-    chrome.tabs.sendMessage(tabs[0].id, { type: 'uncap' })
+    chrome.tabs.sendMessage(tabs[0].id, message)
   )
+}
+
+let uncapButton = document.getElementById('uncap'),
+    hideButton = document.getElementById('hide'),
+    showButton = document.getElementById('show');
+
+uncapButton.addEventListener('click', () =>
+  sendToActiveTab({ type: 'uncap' })
 );
 
-let clearButton = document.getElementById('clear');
+hideButton.addEventListener('click', () =>
+  sendToActiveTab({ type: 'darken' })
+);
 
-clearButton.addEventListener('click', () =>
-  chrome.promise.runtime.sendMessage({ type: 'clear' }).then(() =>
-    console.log('db cleared')
-  )
+showButton.addEventListener('click', () =>
+  sendToActiveTab({ type: 'illuminate' })
 );

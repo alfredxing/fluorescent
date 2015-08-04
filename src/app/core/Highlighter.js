@@ -18,7 +18,7 @@ export default class Highlighter {
   uncap(cb) {
     this._addListener(() => {
       let selection     = rangy.getSelection(),
-          containerNode = null || this.document,
+          containerNode = null || this.document.body,
           annotation    = this._buildAnnotation(selection, containerNode);
 
       cb(annotation);

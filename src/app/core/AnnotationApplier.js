@@ -2,39 +2,26 @@
 
 import utils from './utils/utils';
 import Broadcaster from './Broadcaster';
-import rangy from 'rangy';
 
 export default class AnnotationApplier extends Broadcaster {
 
-  constructor(window, annotation) {
+  constructor(window, annotation, classApplier) {
     super();
     this.document = window.document;
     this._annotation = annotation;
+    this._classApplier = classApplier;
+    this._ranges = utils.deserialize(this.document, this._annotation.position);
     this.apply();
 
     this._startSignals('removed', 'edited');
   }
 
   apply() {
-    // TODO: what to do when there are multiple ranges? How do multiple range
-    // selections exist?
-    let ranges = utils.deserialize(this.document, this._annotation.position);
+    this._classApplier.applyToRanges(this._ranges);
   }
 
   unapply() {
-
-  }
-
-  show() {
-
-  }
-
-  hide() {
-
-  }
-
-  update() {
-
+    this._classApplier.undoToRanges(this._ranges);
   }
 
 }
