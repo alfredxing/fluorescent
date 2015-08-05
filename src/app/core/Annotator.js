@@ -1,8 +1,5 @@
 'use strict';
 
-import rangy from 'rangy';
-import 'rangy/lib/rangy-classapplier';
-
 import utils from './utils/utils';
 import Broadcaster from './Broadcaster';
 import Highlighter from './Highlighter';
@@ -14,13 +11,6 @@ export default class Annotator extends Broadcaster {
     super();
     this.window = window;
     this.highlighter = new Highlighter(window);
-
-    rangy.init();
-
-    // temporary hard-coded class applier for debugging
-    this._classApplier = rangy.createClassApplier('fl-highlight', {
-      elementAttributes: { style: 'background-color: rgba(0,220,63,0.4)'}
-    });
 
     this._annotationAppliers = [];
     annotations.forEach(annotation => this._addAnnotation(annotation));
@@ -59,11 +49,7 @@ export default class Annotator extends Broadcaster {
 
   _addAnnotation(annotation) {
     if (annotation) {
-      let applier = new AnnotationApplier(
-        this.window,
-        annotation,
-        this._classApplier
-      );
+      let applier = new AnnotationApplier(this.window, annotation);
 
       applier.removed.add(this._handleChildRemoved);
       applier.edited.add(this._handleChildEdited);
