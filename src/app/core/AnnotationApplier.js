@@ -43,7 +43,7 @@ export default class AnnotationApplier extends Broadcaster {
   }
 
   _handleTextClick() {
-    alert('clicked');
+    window.alert('clicked');
   }
 
 }

@@ -15,6 +15,11 @@ export default {
     return window.location.href;
   },
 
+  getSelection() {
+    rangy.init();
+    return rangy.getSelection();
+  },
+
   serialize(selection, containerNode) {
     let ranges = selection.getAllRanges(),
         nodeId = this._getNodeIdentifier(containerNode);

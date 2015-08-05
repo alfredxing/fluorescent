@@ -1,7 +1,5 @@
 'use strict';
 
-import rangy from 'rangy';
-
 import Annotation from './Annotation';
 import utils from './utils/utils';
 
@@ -17,7 +15,7 @@ export default class Highlighter {
 
   uncap(cb) {
     this._addListener(() => {
-      let selection     = rangy.getSelection(),
+      let selection     = utils.getSelection(),
           containerNode = null || this.document.body,
           annotation    = this._buildAnnotation(selection, containerNode);
 

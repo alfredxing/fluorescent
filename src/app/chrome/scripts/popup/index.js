@@ -8,7 +8,7 @@ function sendToActiveTab(message) {
     active: true
   }).then(tabs =>
     chrome.tabs.sendMessage(tabs[0].id, message)
-  )
+  );
 }
 
 let uncapButton = document.getElementById('uncap'),
