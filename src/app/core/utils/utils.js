@@ -1,6 +1,7 @@
 'use strict';
 
 import rangy from 'rangy';
+import 'rangy/lib/rangy-classapplier';
 
 export default {
 
@@ -40,6 +41,21 @@ export default {
 
       return range;
     });
+  },
+
+  getClassApplier(className) {
+    rangy.init();
+    return rangy.createClassApplier(className, {
+      // TODO: remove hardcoded style;
+      // let AnnotationApplier handle styling
+      elementAttributes: { style: 'background-color: rgba(0,220,63,0.4)'}
+    });
+  },
+
+  getClassApplierElements(classApplier, ranges) {
+    return ranges
+      .map(range => classApplier.getElementsWithClassIntersectingRange(range))
+      .reduce((a,b) => a.concat(b));
   },
 
   abbreviate(str, length) {

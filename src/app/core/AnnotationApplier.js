@@ -1,8 +1,5 @@
 'use strict';
 
-import rangy from 'rangy';
-import 'rangy/lib/rangy-classapplier';
-
 import utils from './utils/utils';
 import Broadcaster from './Broadcaster';
 
@@ -13,8 +10,7 @@ export default class AnnotationApplier extends Broadcaster {
     this.document = window.document;
     this._annotation = annotation;
 
-    rangy.init();
-    this._classApplier = this._initClassApplier('fl-highlight-' + Date.now());
+    this._classApplier = utils.getClassApplier('fl-highlight-' + Date.now());
     this._ranges = utils.deserialize(this.document, this._annotation.position);
     this.apply();
 
@@ -23,7 +19,10 @@ export default class AnnotationApplier extends Broadcaster {
 
   apply() {
     this._ranges = this._classApplier.applyToRanges(this._ranges);
-    let elements = this._getElements(this._classApplier, this._ranges);
+    let elements = utils.getClassApplierElements(
+      this._classApplier,
+      this._ranges
+    );
 
     elements.forEach(el => {
       el.addEventListener('mouseenter', this._handleTextHover);
@@ -34,18 +33,6 @@ export default class AnnotationApplier extends Broadcaster {
 
   unapply() {
     this._ranges = this._classApplier.undoToRanges(this._ranges);
-  }
-
-  _initClassApplier(className) {
-    return rangy.createClassApplier(className, {
-      elementAttributes: { style: 'background-color: rgba(0,220,63,0.4)'}
-    });
-  }
-
-  _getElements(classApplier, ranges) {
-    return ranges
-      .map(range => classApplier.getElementsWithClassIntersectingRange(range))
-      .reduce((a,b) => a.concat(b));
   }
 
   _handleTextHover() {
