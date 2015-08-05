@@ -7,7 +7,7 @@ import AnnotationApplier from './AnnotationApplier';
 
 export default class Annotator extends Broadcaster {
 
-  constructor(window, annotations, options = {}) {
+  constructor(window, annotations = [], options = {}) {
     super();
     this.window = window;
     this.highlighter = new Highlighter(window);
