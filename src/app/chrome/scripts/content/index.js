@@ -1,6 +1,7 @@
 'use strict';
 
 import Annotator from '../../../core/Annotator';
+import utils from '../../../core/utils/utils';
 
 chrome.promise = new ChromePromise();
 
@@ -9,7 +10,7 @@ let annotator;
 function init() {
   return chrome.promise.runtime.sendMessage({
     type: 'findByUrl',
-    url: window.location.href
+    url: utils.getPageUrl(window)
   }).then(annotations => {
     annotator = new Annotator(window, annotations);
     attachListeners(annotator);

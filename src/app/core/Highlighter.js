@@ -9,8 +9,8 @@ export default class Highlighter {
 
   constructor(window) {
     this.document = window.document;
-    this._url = window.location.href;
-    this._host = window.location.hostname;
+    this._url = utils.getPageUrl(window);
+    this._host = utils.getPageHost(window);
 
     this._listeners = [];
   }

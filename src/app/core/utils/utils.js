@@ -4,6 +4,16 @@ import rangy from 'rangy';
 
 export default {
 
+  getPageHost(window) {
+    return window.location.hostname;
+  },
+
+  getPageUrl(window) {
+    // TODO: this is not going to work properly with hashes or GET params in
+    // the URL; also needs to reliably account for single-page app routes
+    return window.location.href;
+  },
+
   serialize(selection, containerNode) {
     let ranges = selection.getAllRanges(),
         nodeId = this._getNodeIdentifier(containerNode);
