@@ -1,7 +1,7 @@
 'use strict';
 
-import Annotation from './Annotation';
 import utils from './utils/utils';
+import Annotation from './Annotation';
 
 export default class Highlighter {
 

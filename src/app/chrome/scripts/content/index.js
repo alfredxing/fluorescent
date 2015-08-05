@@ -1,7 +1,7 @@
 'use strict';
 
-import Annotator from '../../../core/Annotator';
 import utils from '../../../core/utils/utils';
+import Annotator from '../../../core/Annotator';
 
 chrome.promise = new ChromePromise();
 
