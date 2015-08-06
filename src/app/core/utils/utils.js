@@ -10,9 +10,14 @@ export default {
   },
 
   getPageUrl(window) {
-    // TODO: this is not going to work properly with hashes or GET params in
-    // the URL; also needs to reliably account for single-page app routes
-    return window.location.href;
+    // TODO: what do we do about GET params that change the page contents?
+    let url  = window.location.hostname + window.location.pathname,
+        hash = window.location.hash;
+
+    // if hash starts with '#/', assume it's unique route and append it to url
+    if (/^(#\/)/.test(hash)) { url += (/\/$/.test(url)) ? hash : `\/${hash}`; }
+
+    return url;
   },
 
   getSelection() {

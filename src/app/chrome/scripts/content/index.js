@@ -12,6 +12,7 @@ function init() {
     type: 'findByUrl',
     url: utils.getPageUrl(window)
   }).then(annotations => {
+    if (annotator) { annotator.darken(); }
     annotator = new Annotator(window, annotations);
     attachListeners(annotator);
   });
