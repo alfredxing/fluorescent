@@ -14,8 +14,10 @@ export default {
     let url  = window.location.hostname + window.location.pathname,
         hash = window.location.hash;
 
+    // normalize url by removing trailing '/' character if one exists
+    if (/\/$/.test(url)) { url = url.slice(0,-1); }
     // if hash starts with '#/', assume it's a unique route and append it to url
-    if (/^(#\/)/.test(hash)) { url += (/\/$/.test(url)) ? hash : `\/${hash}`; }
+    if (/^(#\/)/.test(hash)) { url += '/' + hash; }
 
     return url;
   },
