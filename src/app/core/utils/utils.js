@@ -14,7 +14,7 @@ export default {
     let url  = window.location.hostname + window.location.pathname,
         hash = window.location.hash;
 
-    // if hash starts with '#/', assume it's unique route and append it to url
+    // if hash starts with '#/', assume it's a unique route and append it to url
     if (/^(#\/)/.test(hash)) { url += (/\/$/.test(url)) ? hash : `\/${hash}`; }
 
     return url;
