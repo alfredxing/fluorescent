@@ -15,19 +15,17 @@ export default class Annotator extends Broadcaster {
     this._annotationAppliers = [];
     annotations.forEach(annotation => this._addAnnotation(annotation));
 
+    ['_handleHighlight', '_handleChildEdited', '_handleChildRemoved']
+      .forEach(fnName => this[fnName] = this[fnName].bind(this));
+
     this._startSignals('added', 'removed', 'edited');
   }
 
   uncap() {
-    this.highlighter.uncap(annotation => {
-      this._addAnnotation(annotation);
-      this.added.dispatch(annotation);
-      this.highlighter.cap();
-    });
+    this.highlighter.uncap(this._handleHighlight);
   }
 
   cap() {
-    console.log('capped');
     this.highlighter.cap();
   }
 
@@ -66,6 +64,12 @@ export default class Annotator extends Broadcaster {
 
   _removeAnnotation(annotation) {
 
+  }
+
+  _handleHighlight(annotation) {
+    this._addAnnotation(annotation);
+    this.added.dispatch(annotation);
+    this.highlighter.cap();
   }
 
   _handleChildRemoved(annotation) {
