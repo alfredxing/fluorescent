@@ -1,0 +1,148 @@
+<style>
+  .container {
+    all: unset;
+    display: block;
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+    border-top: 3px solid rgba(47,226,103,0.4);
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    width: 320px;
+  }
+  .hide { display: none; }
+
+  .content {
+    padding: 14px 18px;
+  }
+  .datetime {
+    font-size: 12px;
+    color: rgba(26,60,91,0.6);
+  }
+
+  .edit-text-area {
+    margin: 7px 9px;
+    padding: 6px 8px;
+    overflow: hidden;
+    border: 1px solid #d9d9d9;
+    background: #f5f6f7;
+    resize: none;
+    width: 302px;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  .edit-text-area:focus {
+    outline: none;
+  }
+
+  .toolbar {
+    border-top: 1px solid rgba(0,0,0,0.08);
+    height: 40px;
+    box-sizing: inherit;
+  }
+  .toolbar > * {
+    height: 40px;
+    box-sizing: inherit;
+    padding: 8px 10px;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(26,60,91,0.45);
+  }
+  .icon-btn:first-child {
+    margin-left: 8px;
+  }
+  .edit, .edit-save, .edit-cancel {
+    float: right;
+    font-weight: bold;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .edit-save {
+    background-color: rgba(35,163,8,1);
+    color: rgba(255,255,255,1);
+  }
+  .edit-cancel {
+    background-color: rgba(0,0,0,0.05);
+  }
+</style>
+
+<!-- temporary webfonts for prototyping -->
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type='text/css'>
+
+<div class="container">
+  <div class="content">
+    <div class="note-text">The quick brown fox jumps over the lazy dog.</div>
+    <div class="datetime">Last Modified: 4:29 PM August 8, 2015</div>
+  </div>
+  <textarea class="edit-text-area hide">The quick brown fox jumps over the lazy dog.</textarea>
+  <div class="toolbar toolbar-default">
+    <div class="icon-btn change-color">
+      <i class="material-icons">format_color_fill</i>
+    </div>
+    <div class="icon-btn reselect">
+      <i class="material-icons">text_format</i>
+    </div>
+    <div class="icon-btn delete">
+      <i class="material-icons">delete</i>
+    </div>
+    <div class="edit">Edit</div>
+  </div>
+  <div class="toolbar toolbar-edit hide">
+    <div class="icon-btn text-bold">
+      <i class="material-icons">format_bold</i>
+    </div>
+    <div class="icon-btn text-italic">
+      <i class="material-icons">format_italic</i>
+    </div>
+    <div class="icon-btn text-underline">
+      <i class="material-icons">format_underline</i>
+    </div>
+    <div class="edit-cancel">Cancel</div>
+    <div class="edit-save">Save</div>
+  </div>
+</div>
+
+<script>
+  var container      = document.querySelector('.container'),
+      toolbarDefault = container.querySelector('.toolbar-default'),
+      toolbarEdit    = container.querySelector('.toolbar-edit'),
+      content        = container.querySelector('.content'),
+      editTextArea   = container.querySelector('.edit-text-area');
+
+  var btnChangeColor = toolbarDefault.querySelector('.change-color'),
+      btnReselect    = toolbarDefault.querySelector('.reselect'),
+      btnDelete      = toolbarDefault.querySelector('.delete'),
+      btnEdit        = toolbarDefault.querySelector('.edit');
+
+  var btnTextBold    = toolbarEdit.querySelector('.text-bold'),
+      btnTextItalic  = toolbarEdit.querySelector('.text-italic'),
+      btnTextUl      = toolbarEdit.querySelector('.text-underline'),
+      btnEditCancel  = toolbarEdit.querySelector('.edit-cancel'),
+      btnEditSave    = toolbarEdit.querySelector('.edit-save');
+
+  function toggleHide(el) {
+    el.classList.toggle('hide');
+  }
+
+  btnEdit.addEventListener('click', function() {
+    [toolbarDefault, toolbarEdit, content, editTextArea].forEach(toggleHide);
+    editTextArea.focus();
+    editTextArea.value = '';
+    editTextArea.value = content.querySelector('.note-text').innerHTML;
+  });
+
+  btnEditCancel.addEventListener('click', function() {
+    [toolbarDefault, toolbarEdit, content, editTextArea].forEach(toggleHide);
+  });
+
+  btnEditSave.addEventListener('click', function() {
+    [toolbarDefault, toolbarEdit, content, editTextArea].forEach(toggleHide);
+    content.querySelector('.note-text').innerHTML = editTextArea.value;
+  });
+</script>
