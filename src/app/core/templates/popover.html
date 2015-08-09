@@ -14,6 +14,7 @@
 
   .content {
     padding: 14px 18px;
+    word-wrap: break-word;
   }
   .datetime {
     font-size: 12px;
@@ -80,7 +81,7 @@
     <div class="note-text">The quick brown fox jumps over the lazy dog.</div>
     <div class="datetime">Last Modified: 4:29 PM August 8, 2015</div>
   </div>
-  <textarea class="edit-text-area hide">The quick brown fox jumps over the lazy dog.</textarea>
+  <textarea maxlength="300" class="edit-text-area hide">The quick brown fox jumps over the lazy dog.</textarea>
   <div class="toolbar toolbar-default">
     <div class="icon-btn change-color">
       <i class="material-icons">format_color_fill</i>
@@ -103,8 +104,8 @@
     <div class="icon-btn text-underline">
       <i class="material-icons">format_underline</i>
     </div>
-    <div class="edit-cancel">Cancel</div>
     <div class="edit-save">Save</div>
+    <div class="edit-cancel">Cancel</div>
   </div>
 </div>
 
@@ -130,12 +131,21 @@
     el.classList.toggle('hide');
   }
 
+  function resizeTextArea(el) {
+    el.style.height = "auto";
+    el.style.height = "1px";
+    el.style.height = (21 + el.scrollHeight)+"px";
+  }
+
   btnEdit.addEventListener('click', function() {
     [toolbarDefault, toolbarEdit, content, editTextArea].forEach(toggleHide);
     editTextArea.focus();
     editTextArea.value = '';
     editTextArea.value = content.querySelector('.note-text').innerHTML;
+    resizeTextArea(editTextArea);
   });
+
+  editTextArea.addEventListener('keyup', resizeTextArea.bind(null, editTextArea));
 
   btnEditCancel.addEventListener('click', function() {
     [toolbarDefault, toolbarEdit, content, editTextArea].forEach(toggleHide);
