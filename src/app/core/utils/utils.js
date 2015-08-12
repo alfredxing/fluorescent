@@ -115,12 +115,11 @@ export default {
     if (range.commonAncestorContainer.nodeType === 3) {
       return [range.commonAncestorContainer];
     }
-    let textRange = new Range();
     let walker = document.createTreeWalker(
       range.commonAncestorContainer,
-      NodeFilter.SHOW_TEXT, {acceptNode: node => {
-        textRange.selectNode(node);
-        if (range.intersectsNode(node) && textRange.toString() !== '') {
+      NodeFilter.SHOW_TEXT,
+      {acceptNode(node) {
+        if (range.intersectsNode(node) && node.wholeText.trim() !== '') {
           return NodeFilter.FILTER_ACCEPT;
         }
       }},
