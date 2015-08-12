@@ -5,7 +5,7 @@ var gulp       = require('gulp'),
     buffer     = require('vinyl-buffer'),
     source     = require('vinyl-source-stream'),
     merge      = require('merge-stream'),
-    _          = require('lodash'),
+    assign     = require('object.assign'),
     browserify = require('browserify'),
     watchify   = require('watchify'),
     babelify   = require('babelify'),
@@ -21,14 +21,13 @@ function compileAll(watch, prod) {
       bundleNames  = conf.bundles,
       entry        = conf.entry;
 
-  return _.chain(bundleNames)
+  return bundleNames
     .map(function(bundleName) {
       return compile(src, dest, bundleName, entry, watch, prod);
     })
     .reduce(function(a,b) {
       return merge(a,b);
-    })
-    .value();
+    });
 }
 
 function compile(src, dest, bundleName, entry, watch, prod) {
@@ -37,9 +36,8 @@ function compile(src, dest, bundleName, entry, watch, prod) {
     debug: true
   };
 
-  var opts = _.assign({}, watchify.args, customOpts);
-
-  var bundler = browserify(opts);
+  var opts    = assign({}, watchify.args, customOpts),
+      bundler = browserify(opts);
 
   if (watch) {
     bundler = watchify(bundler);

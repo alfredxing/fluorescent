@@ -1,6 +1,5 @@
 'use strict';
 
-import Rx from 'rx';
 import utils from './utils/utils';
 import Annotation from './Annotation';
 
@@ -11,40 +10,43 @@ export default class Highlighter {
     this._url = utils.getPageUrl(window);
     this._host = utils.getPageHost(window);
 
-    this._stream = Rx.Observable.fromEvent(this.document, 'mouseup')
-      .map(() => utils.getSelection())
-      .filter(selection => !selection.isCollapsed);
-    this._observers = [];
+    this._listeners = [];
   }
 
   uncap(cb) {
-    if (this._observers.length === 0) {
-      let observer = this._stream.subscribe(selection => {
-        let containerNode = null || this.document.body,
-            annotation    = this._buildAnnotation(selection, containerNode);
-
-        selection.removeAllRanges();
-        cb(annotation);
-      });
-
-      this._observers.push(observer);
-    }
+    this._addListener(() => {
+      let selectedRange = utils.getSelectedRange(this.document);
+      if (!selectedRange.collapsed) {
+        cb(this._buildAnnotation(selectedRange));
+      }
+    });
   }
 
   cap() {
-    while (this._observers.length) {
-      let observer = this._observers.pop();
-      observer.dispose();
+    this._clearListeners();
+  }
+
+  _buildAnnotation(range) {
+    let url = this._url,
+        position = utils.serialize(this.document, range),
+        host = this._host,
+        summary = utils.abbreviate(range.toString(), 200);
+
+    return new Annotation(url, position, host, summary);
+  }
+
+  _addListener(listener) {
+    if (listener && this._listeners.length === 0) {
+      this._listeners.push(listener);
+      this.document.addEventListener('mouseup', listener);
     }
   }
 
-  _buildAnnotation(selection, containerNode) {
-    let url = this._url,
-        position = utils.serialize(selection, containerNode),
-        host = this._host,
-        summary = utils.abbreviate(selection.toString(), 200);
-
-    return new Annotation(url, position, host, summary);
+  _clearListeners() {
+    while (this._listeners.length) {
+      let listener = this._listeners.pop();
+      this.document.removeEventListener('mouseup', listener);
+    }
   }
 
 }

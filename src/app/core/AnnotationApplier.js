@@ -10,18 +10,16 @@ export default class AnnotationApplier extends Broadcaster {
     this.document = window.document;
     this._annotation = annotation;
 
-    this._classApplier = utils.getClassApplier('fl-highlight-' + Date.now());
-    this._ranges = utils.deserialize(this.document, this._annotation.position);
+    this._className = 'fl-highlight-' + Date.now();
+    this._range = utils.deserialize(this.document, this._annotation.position);
     this.apply();
 
     this._startSignals('removed', 'edited');
   }
 
   apply() {
-    this._ranges = this._classApplier.applyToRanges(this._ranges);
-    let elements = utils.getClassApplierElements(
-      this._classApplier,
-      this._ranges
+    let elements = utils.applyClassToRange(
+      this.document, this._range, this._className
     );
 
     elements.forEach(el => {
@@ -32,7 +30,6 @@ export default class AnnotationApplier extends Broadcaster {
   }
 
   unapply() {
-    this._ranges = this._classApplier.undoToRanges(this._ranges);
   }
 
   _handleTextHover() {

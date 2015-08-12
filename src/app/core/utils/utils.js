@@ -1,8 +1,5 @@
 'use strict';
 
-import rangy from 'rangy';
-import 'rangy/lib/rangy-classapplier';
-
 export default {
 
   getPageHost(window) {
@@ -16,43 +13,139 @@ export default {
 
     // normalize url by removing trailing '/' character if one exists
     if (/\/$/.test(url)) { url = url.slice(0,-1); }
-    // if hash starts with '#/', assume it's a unique route and append it to url
-    if (/^(#\/)/.test(hash)) { url += '/' + hash; }
+    // if hash contains a '/', assume it's a unique route and append it to url
+    if (/^#.*\//.test(hash)) { url += '/' + hash; }
 
     return url;
   },
 
-  getSelection() {
-    rangy.init();
-    return rangy.getSelection();
+  getSelectedRange(document) {
+    let selection = document.getSelection(),
+        range     = selection.getRangeAt(0);
+
+    selection.removeAllRanges();
+    return range;
   },
 
-  serialize(selection, containerNode) {
-    let ranges = selection.getAllRanges(),
-        nodeId = this._getNodeIdentifier(containerNode);
+  serialize(document, range) {
+    let container = null || document.body,
+        preRange  = new Range();
 
-    return ranges
-      .map((range) => range.getBookmark(containerNode))
-      .filter((bookmark) => bookmark.start !== bookmark.end)
-      .map((bookmark) => bookmark.start + ':' + bookmark.end + ':' + nodeId)
-      .reduce((a, b) => a + '$' + b);
+    preRange.selectNodeContents(container);
+    preRange.setEnd(range.startContainer, range.startOffset);
+
+    let start  = preRange.toString().length,
+        end    = start + range.toString().length,
+        nodeId = this._getNodeIdentifier(container);
+
+    return start + ':' + end + ':' + nodeId;
   },
 
-  deserialize(document, positions) {
-    rangy.init();
-    let rangePositions = positions.split('$');
+  deserialize(document, position) {
+    let [start, end, nodeId] = position.split(':');
 
-    return rangePositions.map(position => {
-      let [start, end, nodeId] = position.split(':');
+    let container = this._getNodeFromIdentifier(document, nodeId),
+        range     = new Range();
 
-      let containerNode = this._getNodeFromIdentifier(document, nodeId),
-          bookmark = {start, end, containerNode},
-          range = rangy.createRange();
+    range.setStart(container, 0); range.collapse(true);
 
-      range.moveToBookmark(bookmark);
+    let nodeStack = [container], node, foundStart = false, stop = false,
+        charIndex = 0, nextCharIndex, i, childNodes;
 
-      return range;
-    });
+    while (!stop && (node = nodeStack.pop())) {
+      if (node.nodeType === 3) {
+        nextCharIndex = charIndex + node.length;
+        if (!foundStart && start >= charIndex && start <= nextCharIndex) {
+          range.setStart(node, start - charIndex);
+          foundStart = true;
+        }
+        if (foundStart && end >= charIndex && end <= nextCharIndex) {
+          range.setEnd(node, end - charIndex);
+          stop = true;
+        }
+        charIndex = nextCharIndex;
+      } else {
+        childNodes = node.childNodes;
+        i = childNodes.length;
+        while (i--) {
+          nodeStack.push(childNodes[i]);
+        }
+      }
+    }
+
+    return range;
+  },
+
+  applyClassToRange(document, range, className) {
+    let textNodes = this.getTextNodesInRange(document, range);
+    return textNodes.map(textNode =>
+      this.applyClassToTextNode(document, textNode, className)
+    );
+  },
+
+  getNodeIndex(node) {
+    var i = 0; while (node = node.previousSibling) { ++i; }
+    return i;
+  },
+
+  splitRangeBoundaries(range) {
+    let sc = range.startContainer, so = range.startOffset,
+        ec = range.endContainer, eo = range.endOffset;
+    let startEndSame = (sc === ec);
+
+    if (ec.nodeType === 3 && eo > 0 && eo < ec.length) {
+      ec.splitText(eo);
+    }
+
+    if (sc.nodeType === 3 && so > 0 && so < sc.length) {
+      sc = sc.splitText(so);
+      if (startEndSame) {
+        eo -= so;
+        ec = sc;
+      } else if (ec == sc.parentNode && eo >= this.getNodeIndex(sc)) {
+        eo++;
+      }
+      so = 0;
+    }
+    range.setStart(sc, so); range.setEnd(ec, eo);
+  },
+
+  getTextNodesInRange(document, range) {
+    this.splitRangeBoundaries(range);
+    if (range.commonAncestorContainer.nodeType === 3) {
+      return [range.commonAncestorContainer];
+    }
+    let textRange = new Range();
+    let walker = document.createTreeWalker(
+      range.commonAncestorContainer,
+      NodeFilter.SHOW_TEXT, {acceptNode: node => {
+        textRange.selectNode(node);
+        if (range.intersectsNode(node) && textRange.toString() !== '') {
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }},
+      false
+    ), node, textNodes = [];
+
+    while (node = walker.nextNode()) { textNodes.push(node); }
+    return textNodes;
+  },
+
+  applyClassToTextNode(document, textNode, className) {
+    let parent = textNode.parentNode;
+
+    if (parent.childNodes.length === 1) {
+      parent.classList.add(className);
+      parent.style.backgroundColor = 'rgba(0,220,63,0.4)';
+      return parent;
+    } else {
+      let span = document.createElement('span');
+      span.classList.add(className);
+      span.style.backgroundColor = 'rgba(0,220,63,0.4)';
+      parent.insertBefore(span, textNode);
+      span.appendChild(textNode);
+      return span;
+    }
   },
 
   getClassApplier(className) {
@@ -64,10 +157,8 @@ export default {
     });
   },
 
-  getClassApplierElements(classApplier, ranges) {
-    return ranges
-      .map(range => classApplier.getElementsWithClassIntersectingRange(range))
-      .reduce((a,b) => a.concat(b));
+  getClassApplierElements(classApplier, range) {
+    return classApplier.getElementsWithClassIntersectingRange(range);
   },
 
   abbreviate(str, length) {

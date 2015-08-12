@@ -3,7 +3,6 @@
 var gulp    = require('gulp'),
     plugins = require('gulp-load-plugins')(),
     merge   = require('merge-stream'),
-    _       = require('lodash'),
     config  = require('../config');
 
 gulp.task('images', ['copy-images', 'generate-icons']);
@@ -22,7 +21,7 @@ gulp.task('generate-icons', function() {
       dest      = config.images.dest;
 
   // generate png icons from logo for chrome extension
-  return _.chain(iconSizes)
+  return iconSizes
     .map(function(size) {
       return gulp.src(iconSrc)
         .pipe(plugins.svg2png(size / 100))
@@ -34,6 +33,5 @@ gulp.task('generate-icons', function() {
     })
     .reduce(function(a,b) {
       return merge(a,b);
-    })
-    .value();
+    });
 });
