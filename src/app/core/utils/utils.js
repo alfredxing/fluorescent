@@ -77,9 +77,9 @@ export default {
   },
 
   applyClassToRange(document, range, className) {
-    let textNodes = this.getTextNodesInRange(document, range);
+    let textNodes = this._getTextNodesInRange(document, range);
     return textNodes.map(textNode =>
-      this.applyClassToTextNode(document, textNode, className)
+      this._applyClassToTextNode(document, textNode, className)
     );
   },
 
@@ -87,12 +87,16 @@ export default {
 
   },
 
-  getNodeIndex(node) {
+  abbreviate(str, length) {
+    return str.trim().replace(/\s+/g, ' ').substr(0, length);
+  },
+
+  _getNodeIndex(node) {
     var i = 0; while (node = node.previousSibling) { ++i; }
     return i;
   },
 
-  splitRangeBoundaries(range) {
+  _splitRangeBoundaries(range) {
     let sc = range.startContainer, so = range.startOffset,
         ec = range.endContainer, eo = range.endOffset;
     let startEndSame = (sc === ec);
@@ -106,7 +110,7 @@ export default {
       if (startEndSame) {
         eo -= so;
         ec = sc;
-      } else if (ec == sc.parentNode && eo >= this.getNodeIndex(sc)) {
+      } else if (ec == sc.parentNode && eo >= this._getNodeIndex(sc)) {
         eo++;
       }
       so = 0;
@@ -114,8 +118,8 @@ export default {
     range.setStart(sc, so); range.setEnd(ec, eo);
   },
 
-  getTextNodesInRange(document, range) {
-    this.splitRangeBoundaries(range);
+  _getTextNodesInRange(document, range) {
+    this._splitRangeBoundaries(range);
     if (range.commonAncestorContainer.nodeType === 3) {
       return [range.commonAncestorContainer];
     }
@@ -134,7 +138,7 @@ export default {
     return textNodes;
   },
 
-  applyClassToTextNode(document, textNode, className) {
+  _applyClassToTextNode(document, textNode, className) {
     let parent = textNode.parentNode,
         span   = document.createElement('span');
 
@@ -143,10 +147,6 @@ export default {
     parent.insertBefore(span, textNode);
     span.appendChild(textNode);
     return span;
-  },
-
-  abbreviate(str, length) {
-    return str.trim().replace(/\s+/g, ' ').substr(0, length);
   },
 
   _getNodeIdentifier(node) {
