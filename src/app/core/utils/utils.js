@@ -67,9 +67,7 @@ export default {
       } else {
         childNodes = node.childNodes;
         i = childNodes.length;
-        while (i--) {
-          nodeStack.push(childNodes[i]);
-        }
+        while (i--) { nodeStack.push(childNodes[i]); }
       }
     }
 
