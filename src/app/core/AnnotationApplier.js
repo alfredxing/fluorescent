@@ -23,6 +23,7 @@ export default class AnnotationApplier extends Broadcaster {
     );
 
     elements.forEach(el => {
+      el.style.backgroundColor = 'rgba(0,220,63,0.4)';
       el.addEventListener('mouseenter', this._handleTextHover);
       el.addEventListener('mouseleave', this._handleTextUnhover);
       el.addEventListener('click', this._handleTextClick);

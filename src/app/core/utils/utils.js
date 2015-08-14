@@ -77,16 +77,40 @@ export default {
   applyClassToRange(document, range, className) {
     let textNodes = this._getTextNodesInRange(document, range);
     return textNodes.map(textNode =>
-      this._applyClassToTextNode(document, textNode, className)
+      this._wrapTextNode(document, textNode, className)
     );
   },
 
   unapplyClassToRange(document, range, className) {
-
+    let textNodes = this._getTextNodesInRange(document, range);
+    textNodes.map(textNode =>
+      this._unwrapTextNode(document, textNode, className)
+    );
+    range.commonAncestorContainer.normalize();
   },
 
   abbreviate(str, length) {
     return str.trim().replace(/\s+/g, ' ').substr(0, length);
+  },
+
+  _wrapTextNode(document, textNode, className) {
+    let parent = textNode.parentNode,
+        span   = document.createElement('span');
+
+    span.classList.add(className);
+    parent.insertBefore(span, textNode);
+    span.appendChild(textNode);
+    return span;
+  },
+
+  _unwrapTextNode(document, textNode, className) {
+
+  },
+
+  _unwrap(el) {
+    let parent  = el.parentNode;
+    while (el.firstChild) { parent.insertBefore(el.firstChild, el); }
+    parent.removeChild(el);
   },
 
   _getNodeIndex(node) {
@@ -134,17 +158,6 @@ export default {
 
     while (node = walker.nextNode()) { textNodes.push(node); }
     return textNodes;
-  },
-
-  _applyClassToTextNode(document, textNode, className) {
-    let parent = textNode.parentNode,
-        span   = document.createElement('span');
-
-    span.classList.add(className);
-    span.style.backgroundColor = 'rgba(0,220,63,0.4)';
-    parent.insertBefore(span, textNode);
-    span.appendChild(textNode);
-    return span;
   },
 
   _getNodeIdentifier(node) {
