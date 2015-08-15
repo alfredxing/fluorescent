@@ -79,11 +79,11 @@ export default {
         startNode = textNodes[0],
         endNode   = textNodes[textNodes.length - 1];
 
-    range.setStart(startNode, 0); range.setEnd(endNode, endNode.length);
-
-    return textNodes.map(textNode =>
+    let els = textNodes.map(textNode =>
       this._wrapTextNode(document, textNode, className)
     );
+    range.setStart(startNode, 0); range.setEnd(endNode, endNode.length);
+    return els;
   },
 
   unapplyClassToRange(document, range, className) {
@@ -126,8 +126,8 @@ export default {
 
   _splitRangeBoundaries(range) {
     let sc = range.startContainer, so = range.startOffset,
-        ec = range.endContainer, eo = range.endOffset;
-    let startEndSame = (sc === ec);
+        ec = range.endContainer, eo = range.endOffset,
+        startEndSame = (sc === ec);
 
     if (ec.nodeType === 3 && eo > 0 && eo < ec.length) {
       ec.splitText(eo);
