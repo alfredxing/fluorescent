@@ -80,6 +80,7 @@ export default {
         endNode   = textNodes[textNodes.length - 1];
 
     let els = textNodes.map(textNode =>
+      this._getAncestorWithClass(textNode, className) ||
       this._wrapTextNode(document, textNode, className)
     );
     range.setStart(startNode, 0); range.setEnd(endNode, endNode.length);
