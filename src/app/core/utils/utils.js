@@ -75,7 +75,12 @@ export default {
   },
 
   applyClassToRange(document, range, className) {
-    let textNodes = this._getTextNodesInRange(document, range);
+    let textNodes = this._getTextNodesInRange(document, range),
+        startNode = textNodes[0],
+        endNode   = textNodes[textNodes.length - 1];
+
+    range.setStart(startNode, 0); range.setEnd(endNode, endNode.length);
+
     return textNodes.map(textNode =>
       this._wrapTextNode(document, textNode, className)
     );
@@ -87,6 +92,12 @@ export default {
       this._unwrapTextNode(document, textNode, className)
     );
     range.commonAncestorContainer.normalize();
+  },
+
+  unwrap(el) {
+    let parent  = el.parentNode;
+    while (el.firstChild) { parent.insertBefore(el.firstChild, el); }
+    parent.removeChild(el);
   },
 
   abbreviate(str, length) {
@@ -105,13 +116,7 @@ export default {
 
   _unwrapTextNode(document, textNode, className) {
     let el = this._getAncestorWithClass(textNode, className);
-    if (el) { this._unwrap(el); }
-  },
-
-  _unwrap(el) {
-    let parent  = el.parentNode;
-    while (el.firstChild) { parent.insertBefore(el.firstChild, el); }
-    parent.removeChild(el);
+    if (el) { this.unwrap(el); }
   },
 
   _getNodeIndex(node) {
@@ -162,9 +167,11 @@ export default {
   },
 
   _getAncestorWithClass(node, className) {
-    let parent;
-    while (parent = node.parentNode) {
-      if (parent.classList.contains(className)) { return parent; }
+    while (node) {
+      if (node.nodeType === 1 && node.classList.contains(className)) {
+        return node;
+      }
+      node = node.parentNode;
     }
     return null;
   },

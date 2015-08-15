@@ -18,11 +18,11 @@ export default class AnnotationApplier extends Broadcaster {
   }
 
   apply() {
-    let elements = utils.applyClassToRange(
+    let els = utils.applyClassToRange(
       this.document, this._range, this._className
     );
 
-    elements.forEach(el => {
+    els.forEach(el => {
       el.style.backgroundColor = 'rgba(0,220,63,0.4)';
       el.addEventListener('mouseenter', this._handleTextHover);
       el.addEventListener('mouseleave', this._handleTextUnhover);
@@ -31,7 +31,6 @@ export default class AnnotationApplier extends Broadcaster {
   }
 
   unapply() {
-    console.log(this._range.toString());
     utils.unapplyClassToRange(document, this._range, this._className);
   }
 
