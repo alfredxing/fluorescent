@@ -104,7 +104,8 @@ export default {
   },
 
   _unwrapTextNode(document, textNode, className) {
-
+    let el = this._getAncestorWithClass(textNode, className);
+    if (el) { this._unwrap(el); }
   },
 
   _unwrap(el) {
@@ -158,6 +159,14 @@ export default {
 
     while (node = walker.nextNode()) { textNodes.push(node); }
     return textNodes;
+  },
+
+  _getAncestorWithClass(node, className) {
+    let parent;
+    while (parent = node.parentNode) {
+      if (parent.classList.contains(className)) { return parent; }
+    }
+    return null;
   },
 
   _getNodeIdentifier(node) {

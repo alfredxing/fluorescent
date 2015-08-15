@@ -31,6 +31,8 @@ export default class AnnotationApplier extends Broadcaster {
   }
 
   unapply() {
+    console.log(this._range.toString());
+    utils.unapplyClassToRange(document, this._range, this._className);
   }
 
   _handleTextHover() {
