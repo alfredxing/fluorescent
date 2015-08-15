@@ -94,12 +94,6 @@ export default {
     range.commonAncestorContainer.normalize();
   },
 
-  unwrap(el) {
-    let parent  = el.parentNode;
-    while (el.firstChild) { parent.insertBefore(el.firstChild, el); }
-    parent.removeChild(el);
-  },
-
   abbreviate(str, length) {
     return str.trim().replace(/\s+/g, ' ').substr(0, length);
   },
@@ -116,7 +110,13 @@ export default {
 
   _unwrapTextNode(document, textNode, className) {
     let el = this._getAncestorWithClass(textNode, className);
-    if (el) { this.unwrap(el); }
+    if (el) { this._unwrap(el); }
+  },
+
+  _unwrap(el) {
+    let parent  = el.parentNode;
+    while (el.firstChild) { parent.insertBefore(el.firstChild, el); }
+    parent.removeChild(el);
   },
 
   _getNodeIndex(node) {
