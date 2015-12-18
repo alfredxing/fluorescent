@@ -1,0 +1,49 @@
+{
+  "name": "fluorescent",
+  "version": "1.0.0",
+  "description": "chrome extension for highlighting and annotating webpages",
+  "manifest_version": 2,
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "64": "images/icon-64.png",
+    "96": "images/icon-96.png",
+    "128": "images/icon-128.png",
+    "256": "images/icon-256.png",
+
+    "19": "images/icon-19.png",
+    "38": "images/icon-38.png"
+  },
+
+  "background": {
+    "scripts": ["scripts/background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "fluorescent",
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "lib/chrome-promise/chrome-promise.js",
+        "scripts/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "<all_urls>"
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+}
