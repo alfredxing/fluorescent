@@ -3,6 +3,7 @@
 import utils from './utils/utils';
 import Broadcaster from './Broadcaster';
 import Highlighter from './Highlighter';
+import CommentList from './CommentList';
 import AnnotationApplier from './AnnotationApplier';
 
 export default class Annotator extends Broadcaster {
@@ -11,6 +12,8 @@ export default class Annotator extends Broadcaster {
     super();
     this.window = window;
     this.highlighter = new Highlighter(window);
+
+    this._commentList = new CommentList(this.window);
 
     this._annotationAppliers = [];
     annotations.forEach(annotation => this._addAnnotation(annotation));
@@ -53,6 +56,11 @@ export default class Annotator extends Broadcaster {
       applier.edited.add(this._handleChildEdited);
 
       this._annotationAppliers.push(applier);
+      this._commentList.addComment(
+        annotation.id,
+        annotation.comment,
+        applier.getYOffset()
+      );
     }
 
     return annotation;

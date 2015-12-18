@@ -32,7 +32,7 @@ export default class Highlighter {
         host = this._host,
         summary = utils.abbreviate(range.toString(), 200);
 
-    return new Annotation(url, position, host, summary);
+    return new Annotation(url, position, host, summary, '');
   }
 
   _addListener(listener) {

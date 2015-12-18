@@ -37,6 +37,14 @@ module.exports = {
       dest: './dist/chrome/scripts/'
     }
   },
+  resources: {
+    src: './src/app/resources/',
+    dest: './dist/chrome-dev/resources/',
+
+    prod: {
+      dest: './dist/chrome/resources'
+    }
+  },
   images: {
     src: './src/app/chrome/images/',
     dest: './dist/chrome-dev/images/',

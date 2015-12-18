@@ -3,7 +3,7 @@ import riot from 'riot';
 riot.tag('comment',
   // template
   `
-    <div class="{'content': true}">
+    <div class="{'content': true, 'hide': this.mode != 0}">
       <div class="{'note-text': true}" name="noteText"></div>
       <div class="{'datetime': true}" name="dateTime"></div>
     </div>
@@ -33,7 +33,7 @@ riot.tag('comment',
         <i class="{'material-icons': true}">format_bold</i>
       </button>
       <button class="{'icon-btn': true}" name="textItalic">
-        <i class={'material-icons': true}>format_italic</i>
+        <i class="{'material-icons': true}">format_italic</i>
       </button>
       <button class="{'icon-btn': true}" name="textUnderline">
         <i class="{'material-icons': true}">format_underline</i>
@@ -66,8 +66,8 @@ riot.tag('comment',
     const resizeTextArea = () => {
       let e = this.editTextArea;
 
-      e.style.height = "auto";
-      e.style.height = "1px";
+      e.style.height = 'auto';
+      e.style.height = '1px';
       e.style.height = (21 + e.scrollHeight) + 'px';
     };
 
@@ -146,7 +146,7 @@ const styles = `
     height: 40px;
     box-sizing: inherit;
   }
-  .toolbar > *, .icon-btn {
+  .toolbar > * {
     height: 40px;
     box-sizing: inherit;
     padding: 8px 10px;
@@ -159,7 +159,6 @@ const styles = `
     border: 0;
     margin: 0;
     background: none;
-    padding: 0;
   }
   .icon-btn:first-child {
     margin-left: 8px;

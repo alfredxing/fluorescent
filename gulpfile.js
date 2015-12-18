@@ -5,4 +5,4 @@ var gulp       = require('gulp'),
 
 requireDir('./gulp/tasks', { recurse: true });
 
-gulp.task('default', ['base', 'scripts', 'styles', 'images']);
+gulp.task('default', ['base', 'resources', 'scripts', 'styles', 'images']);

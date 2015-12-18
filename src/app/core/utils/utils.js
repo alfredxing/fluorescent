@@ -121,7 +121,7 @@ export default {
   },
 
   _getNodeIndex(node) {
-    var i = 0; while (node = node.previousSibling) { ++i; }
+    var i = 0; while (!!(node = node.previousSibling)) { ++i; }
     return i;
   },
 
@@ -139,7 +139,7 @@ export default {
       if (startEndSame) {
         eo -= so;
         ec = sc;
-      } else if (ec == sc.parentNode && eo >= this._getNodeIndex(sc)) {
+      } else if (ec === sc.parentNode && eo >= this._getNodeIndex(sc)) {
         eo++;
       }
       so = 0;
@@ -163,7 +163,7 @@ export default {
       false
     ), node, textNodes = [];
 
-    while (node = walker.nextNode()) { textNodes.push(node); }
+    while (!!(node = walker.nextNode())) { textNodes.push(node); }
     return textNodes;
   },
 
