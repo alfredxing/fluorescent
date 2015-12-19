@@ -1,5 +1,6 @@
 'use strict';
 
+import loadResources from './loadResources';
 import utils from '../../../core/utils/utils';
 import Annotator from '../../../core/Annotator';
 
@@ -8,6 +9,8 @@ chrome.promise = new ChromePromise();
 let annotator;
 
 function init() {
+  loadResources();
+
   return chrome.promise.runtime.sendMessage({
     type: 'findByUrl',
     url: utils.getPageUrl(window)

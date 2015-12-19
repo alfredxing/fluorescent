@@ -39,7 +39,9 @@
       "all_frames": true
     }
   ],
-
+  "web_accessible_resources": [
+    "resources/*"
+  ],
   "permissions": [
     "contextMenus",
     "tabs",
