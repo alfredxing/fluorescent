@@ -12,7 +12,7 @@ export default class Highlighter {
   constructor(store, annotations=[]) {
     let highlights = {};
 
-    annotations.forEach(a => this.handleAdd(a));
+    annotations.forEach(annotation => this.handleAdd({ annotation }));
 
     this.store = store;
     this.highlights = highlights;
