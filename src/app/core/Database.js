@@ -3,21 +3,24 @@
 import Dexie from 'dexie';
 import Annotation from './Annotation.js';
 
-export default class Storage {
+export default class Database {
 
   constructor() {
-    this.db = new Dexie("fluorescent");
-    this.db.version(1).stores({
+    let db = new Dexie("fluorescent");
+    db.version(1).stores({
       annotations: '++id,url,position,&[url+position]'
     });
-    this.db.annotations.mapToClass(Annotation);
-    this.db.open();
+    db.annotations.mapToClass(Annotation);
+    db.open();
+
+    this.db = db;
   }
 
   create(annotation) {
     return this.db.annotations.put(annotation);
   }
 
+  // TODO
   find(params) {
 
   }

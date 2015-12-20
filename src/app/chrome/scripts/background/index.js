@@ -1,13 +1,13 @@
 'use strict';
 
-import Storage from '../../../core/Storage.js';
+import Database from '../../../core/Database.js';
 
-let storage = new Storage();
+let db = new Database();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'save':
-      storage.create(message.annotation).then(result =>
+      db.create(message.annotation).then(result =>
         sendResponse(result)
       );
       break;
@@ -16,12 +16,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'find':
       break;
     case 'findByUrl':
-      storage.findByUrl(message.url).then(result =>
+      db.findByUrl(message.url).then(result =>
         sendResponse(result)
       );
       break;
     case 'clear':
-      storage.clear().then(() =>
+      db.clear().then(() =>
         sendResponse()
       );
       break;

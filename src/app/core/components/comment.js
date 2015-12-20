@@ -105,7 +105,7 @@ const styles = `
     all: unset;
     display: block;
     font-family: Roboto, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5em;
     background: #fff;
     border-top: 3px solid rgba(47,226,103,0.4);
@@ -145,16 +145,17 @@ const styles = `
   }
   .toolbar {
     border-top: 1px solid rgba(0,0,0,0.08);
-    height: 40px;
+    height: 31px;
     box-sizing: inherit;
   }
   .toolbar > * {
-    height: 40px;
+    height: 31px;
     box-sizing: inherit;
-    padding: 8px 10px;
+    padding: 5px 6px;
     display: inline-block;
+    line-height: 1em;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(26,60,91,0.45);
   }
   .icon-btn {
@@ -182,7 +183,7 @@ const styles = `
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
-    font-size: 24px;  /* Preferred icon size */
+    font-size: 19px;  /* Preferred icon size */
     display: inline-block;
     width: 1em;
     height: 1em;

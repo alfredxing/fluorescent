@@ -15,3 +15,6 @@ riot.tag('commentList',
 
   }
 );
+
+const styles = `
+`;

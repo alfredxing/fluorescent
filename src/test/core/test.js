@@ -1,6 +1,6 @@
 'use strict';
 
-import Storage from '../../app/core/Storage.js';
+import Database from '../../app/core/Database.js';
 import Annotation from '../../app/core/Annotation.js';
 
 describe('fluorescent core', () => {
@@ -14,26 +14,26 @@ describe('fluorescent core', () => {
         summary = 'quick summary',
         annotation = new Annotation(url, position, host, summary);
 
-    let storage = new Storage();
+    let db = new Database();
 
-    afterEach(() => storage.clear());
+    afterEach(() => db.clear());
 
     it('should be able to save an annotation', () => {
-      let createPromise = storage.create(annotation);
+      let createPromise = db.create(annotation);
       return expect(createPromise).to.eventually.be.fulfilled;
     });
 
     describe('the result from querying for an annotation by url', () => {
 
-      beforeEach(() => storage.create(annotation));
+      beforeEach(() => db.create(annotation));
 
       it('should be an Annotation object', () => {
-        let result = storage.findByUrl(url).then(result => result[0]);
+        let result = db.findByUrl(url).then(result => result[0]);
         return expect(result).to.eventually.be.an.instanceof(Annotation);
       });
 
       it('should be identical to the Annotation object before it was saved', () => {
-        let result = storage.findByUrl(url).then(result => result[0]);
+        let result = db.findByUrl(url).then(result => result[0]);
         return expect(result).to.eventually.deep.equal(annotation);
       });
 
