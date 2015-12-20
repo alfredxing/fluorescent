@@ -1,0 +1,20 @@
+{
+  "browser": true,
+  "node": true,
+
+  "esnext": true,
+
+  "bitwise": true,
+  "curly": true,
+
+  "eqeqeq": true,
+  "latedef": "nofunc",
+  "noarg": true,
+  "undef": true,
+  "unused": false,
+
+  "globals": {
+    "chrome": true,
+    "ChromePromise": true
+  }
+}
