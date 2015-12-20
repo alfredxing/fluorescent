@@ -7,7 +7,7 @@ const annotations = (state=[], action) => {
     case types.SET_ANNOTATIONS:
       return [...action.annotations];
     case types.ADD_ANNOTATION:
-      return (action.annotation) ? [...state, types.annotation] : state;
+      return (action.annotation) ? [...state, action.annotation] : state;
     case types.DEL_ANNOTATION:
       return (action.id) ? state.filter(a => a.id != id) : state;
     case types.EDIT_ANNOTATION:

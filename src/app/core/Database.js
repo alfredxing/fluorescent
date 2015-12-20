@@ -8,7 +8,7 @@ export default class Database {
   constructor() {
     let db = new Dexie("fluorescent");
     db.version(1).stores({
-      annotations: '++id,url,position,&[url+position]'
+      annotations: 'id,url,position,&[url+position]'
     });
     db.annotations.mapToClass(Annotation);
     db.open();

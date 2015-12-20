@@ -6,7 +6,7 @@ riot.tag('comment',
   // template
   `
     <div class="{'content': true, 'hide': this.mode != 0}">
-      <div class="{'note-text': true}" name="noteText"></div>
+      <div class="{'note-text': true}" name="noteText">{opts.text}</div>
       <div class="{'datetime': true}" name="dateTime"></div>
     </div>
 
@@ -50,10 +50,6 @@ riot.tag('comment',
   `,
   // script
   function(opts) {
-    if (opts.style) {
-      opts.style.innerHTML = opts.style.innerHTML + styles;
-    }
-
     const DEFAULT_MODE = 0,
           EDIT_MODE = 1,
           FORMAT_MODE = 2;
@@ -100,7 +96,7 @@ riot.tag('comment',
   }
 );
 
-const styles = `
+export const commentStyles = `
   comment {
     all: unset;
     display: block;
@@ -112,6 +108,10 @@ const styles = `
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     width: 320px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.2s ease-in-out;
   }
   comment > * {
     box-sizing: inherit;

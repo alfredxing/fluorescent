@@ -73,11 +73,13 @@ function initContainer() {
   container.style.cssText = `position:absolute;top:0;right:0;z-index:9999`;
 
   let style       = document.createElement('style'),
-      commentList = document.createElement('div');
+      commentList = document.createElement('commentList');
 
   shadow.resetStyleInheritance = true;
   shadow.appendChild(style);
   shadow.appendChild(commentList);
+
+  document.body.appendChild(container);
 
   return { commentList, style };
 }
