@@ -71,7 +71,7 @@ function initContainer() {
       shadow    = container.createShadowRoot();
 
   container.style.cssText = `
-    width: 340px;
+    width: 360px;
     position: absolute;
     display: block;
     top: 0;

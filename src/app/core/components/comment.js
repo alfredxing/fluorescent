@@ -2,21 +2,22 @@
 
 import riot from 'riot';
 import { editAndNotify, deleteAndNotify } from '../actions/annotations';
+import { setHovered, setFocused } from '../actions/ui';
 
 riot.tag('comment',
   // template
   `
-    <div class="{'content': true, 'hide': this.mode != 0}">
+    <div class="{'content': true, 'hide': mode != 0}">
       <div class="{'note-text': true}" name="noteText">{opts.text}</div>
       <div class="{'datetime': true}" name="dateTime"></div>
     </div>
 
-    <textarea class="{'edit-text-area': true, 'hide': this.mode != 1}"
+    <textarea class="{'edit-text-area': true, 'hide': mode != 1}"
               name="editTextArea"
               maxlength="300">
     </textarea>
 
-    <div class="{'toolbar': true, 'hide': this.mode != 0}">
+    <div class="{'toolbar': true, 'hide': mode != 0}">
       <button class="{'icon-btn': true}" name="changeColor">
         <i class="{'material-icons' : true}">format_color_fill</i>
       </button>
@@ -31,7 +32,7 @@ riot.tag('comment',
       </button>
     </div>
 
-    <div class="{'toolbar': true, 'hide': this.mode != 1}">
+    <div class="{'toolbar': true, 'hide': mode != 1}">
       <button class="{'icon-btn': true}" name="textBold">
         <i class="{'material-icons': true}">format_bold</i>
       </button>
@@ -73,7 +74,9 @@ riot.tag('comment',
     this.id = opts.id;
 
     this.mixin('redux');
-    this.dispatchify({ editAndNotify, deleteAndNotify });
+    this.dispatchify({
+      editAndNotify, deleteAndNotify, setHovered, setFocused
+    });
 
     const editHandler = () => {
       setMode(EDIT_MODE);
@@ -98,10 +101,33 @@ riot.tag('comment',
       this.editAndNotify(this.id, { comment: newText });
     };
 
+    const deleteHandler = () => {
+      this.deleteAndNotify(this.id);
+    }
+
+    const clickHandler = e => {
+      e.stopImmediatePropagation();
+      this.setFocused(this.id);
+    };
+
+    const hoverHandler = () => {
+      this.setHovered(this.id);
+    }
+
+    const unhoverHandler = () => {
+      this.setHovered(null);
+    }
+
     this.editTextArea.addEventListener('keyup', resizeTextArea);
     this.edit.addEventListener('click', editHandler);
     this.editCancel.addEventListener('click', editCancelHandler);
     this.editSave.addEventListener('click', editSaveHandler);
+
+    this.delete.addEventListener('click', deleteHandler);
+
+    this.root.addEventListener('click', clickHandler);
+    this.root.addEventListener('mouseenter', hoverHandler);
+    this.root.addEventListener('mouseleave', unhoverHandler);
   }
 );
 
@@ -120,14 +146,26 @@ export const commentStyles = `
     position: absolute;
     top: 0;
     left: 0;
+    pointer-events: auto;
+    opacity: 1;
     transform-origin: 100% 50%;
-    transition: transform 0.15s ease-in-out,
-                opacity 0.15s ease-in-out;
+    transition: transform 0.1s ease-in-out,
+                opacity 0.1s ease-in-out;
+  }
+  comment.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  comment.focused .toolbar,
+  comment.focused .edit-text-area {
+    display: block;
+  }
+  comment.focused .hide {
+    display: none;
   }
   comment > * {
     box-sizing: inherit;
   }
-  .hide { display: none; }
   .content {
     padding: 14px 18px;
     word-wrap: break-word;
@@ -150,6 +188,7 @@ export const commentStyles = `
     font-size: inherit;
     line-height: inherit;
     color: inherit;
+    display: none;
   }
   .edit-text-area:focus {
     outline: none;
@@ -158,11 +197,12 @@ export const commentStyles = `
     border-top: 1px solid rgba(0,0,0,0.08);
     height: 31px;
     box-sizing: inherit;
+    display: none;
   }
   .toolbar > * {
     height: 31px;
     box-sizing: inherit;
-    padding: 5px 6px;
+    padding: 6px;
     display: inline-block;
     line-height: 1em;
     cursor: pointer;
@@ -198,7 +238,7 @@ export const commentStyles = `
     display: inline-block;
     width: 1em;
     height: 1em;
-    line-height: 1;
+    line-height: 1.1em;
     text-transform: none;
     letter-spacing: normal;
     word-wrap: normal;

@@ -38,7 +38,7 @@ export default class Highlighter {
   }
 
   handleAdd({ annotation }) {
-    let highlight = new Highlight(annotation);
+    let highlight = new Highlight(this.store, annotation);
     this.updatePosition(annotation.id, highlight);
 
     this.highlights[annotation.id] = highlight;
@@ -50,6 +50,7 @@ export default class Highlighter {
     if (highlight) {
       highlight.unapply();
       delete this.highlights[id];
+      this.store.dispatch(deletePosition(id));
     }
   }
 

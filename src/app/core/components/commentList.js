@@ -3,9 +3,14 @@
 import riot from 'riot';
 import './comment';
 import { commentStyles } from './comment';
+import { unsetAll } from '../actions/ui';
 import { annotationsSelector } from '../selectors/annotationSelectors';
 import { positionsSelector } from '../selectors/positionSelectors';
-import { showSelector } from '../selectors/uiSelectors';
+import {
+  showSelector,
+  hoveredSelector,
+  focusedSelector
+} from '../selectors/uiSelectors';
 
 riot.tag('commentList',
   // template
@@ -14,11 +19,17 @@ riot.tag('commentList',
       <comment each="{annotation in annotations}"
                id="{annotation.id}"
                text="{annotation.comment}"
+               class="{
+                 hovered: annotation.id === hoveredId,
+                 focused: annotation.id === focusedId,
+                 hidden:  !show
+               }"
                riot-style="
-                 opacity: { show ? 1 : 0 };
                  transform: translateY({positions[annotation.id]}px)
-                            scale({show ? 1 : 0.75})
-                            rotateY({show ? 0 : -10}deg);
+                            translateX({(annotation.id === focusedId ||
+                                         annotation.id === hoveredId) ?
+                                         -15 : 0}px)
+                            scale({show ? 1 : 0.8});
                ">
       </comment>
     </div>
@@ -30,19 +41,25 @@ riot.tag('commentList',
     }
 
     this.mixin('redux');
+    this.dispatchify({ unsetAll });
+
     this.show = true;
 
-    this.subscribe(positionsSelector, positions => {
-      this.positions = positions;
-      this.update();
-    });
-    this.subscribe(annotationsSelector, annotations => {
-      this.annotations = annotations;
-      this.update();
-    });
-    this.subscribe(showSelector, show => {
-      this.show = show;
-      this.update();
+    const subscribe = (selector, field) => {
+      this.subscribe(selector, state => {
+        this[field] = state;
+        this.update();
+      });
+    };
+
+    subscribe(positionsSelector, 'positions');
+    subscribe(annotationsSelector, 'annotations');
+    subscribe(showSelector, 'show');
+    subscribe(hoveredSelector, 'hoveredId');
+    subscribe(focusedSelector, 'focusedId');
+
+    document.addEventListener('click', () => {
+      this.unsetAll();
     });
   }
 );
@@ -50,11 +67,8 @@ riot.tag('commentList',
 const styles = `
   commentList {
     position: relative;
-    margin-left: 10px;
+    margin-left: 30px;
     display: block;
-  }
-  .comment-list-container {
-    perspective: 1600px;
   }
   ${commentStyles}
 `;

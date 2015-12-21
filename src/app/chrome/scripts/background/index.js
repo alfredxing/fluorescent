@@ -7,11 +7,14 @@ let db = new Database();
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'save':
-      db.create(message.annotation).then(result =>
+      db.save(message.annotation).then(result =>
         sendResponse(result)
       );
       break;
     case 'delete':
+      db.delete(message.id).then(() =>
+        sendResponse()
+      );
       break;
     case 'find':
       break;

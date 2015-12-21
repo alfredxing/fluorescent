@@ -19,13 +19,13 @@ describe('fluorescent core', () => {
     afterEach(() => db.clear());
 
     it('should be able to save an annotation', () => {
-      let createPromise = db.create(annotation);
+      let createPromise = db.save(annotation);
       return expect(createPromise).to.eventually.be.fulfilled;
     });
 
     describe('the result from querying for an annotation by url', () => {
 
-      beforeEach(() => db.create(annotation));
+      beforeEach(() => db.save(annotation));
 
       it('should be an Annotation object', () => {
         let result = db.findByUrl(url).then(result => result[0]);
