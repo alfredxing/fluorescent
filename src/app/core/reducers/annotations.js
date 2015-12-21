@@ -1,5 +1,6 @@
 'use strict';
 
+import "babel-polyfill";
 import { types } from '../actions/annotations';
 
 const annotations = (state=[], action) => {
@@ -9,9 +10,13 @@ const annotations = (state=[], action) => {
     case types.ADD_ANNOTATION:
       return (action.annotation) ? [...state, action.annotation] : state;
     case types.DEL_ANNOTATION:
-      return (action.id) ? state.filter(a => a.id != id) : state;
+      return (action.id) ? state.filter(a => a.id != action.id) : state;
     case types.EDIT_ANNOTATION:
-      return state;
+      let annotation = action.annotation,
+          index = state.findIndex(a => a.id == annotation.id);
+      if (index < 0) { return state; }
+
+      return [...state.slice(0, index), annotation, ...state.slice(index+1)];
     default:
       return state;
   }

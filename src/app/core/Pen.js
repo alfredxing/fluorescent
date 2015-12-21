@@ -5,6 +5,7 @@ import Annotation from './Annotation';
 import observeStore from './store/observeStore';
 import { uncappedSelector } from './selectors/uiSelectors';
 import { addAndNotify } from './actions/annotations';
+import { cap } from './actions/ui';
 
 export default class Pen {
 
@@ -30,6 +31,7 @@ export default class Pen {
 
       if (!selectedRange.collapsed) {
         let annotation = this.buildAnnotation(selectedRange);
+        this.store.dispatch(cap());
         this.store.dispatch(addAndNotify(annotation));
       }
     });

@@ -16,6 +16,7 @@ export default class Highlighter {
 
     this.store = store;
     this.highlights = highlights;
+    this.show = true;
 
     store.dispatch(addListener(events.SET,  this.handleSet.bind(this)));
     store.dispatch(addListener(events.ADD,  this.handleAdd.bind(this)));
@@ -37,7 +38,7 @@ export default class Highlighter {
   }
 
   handleAdd({ annotation }) {
-    let highlight = new Highlight(annotation);
+    let highlight = new Highlight(this.store, annotation);
     this.updatePosition(annotation.id, highlight);
 
     this.highlights[annotation.id] = highlight;
@@ -49,6 +50,7 @@ export default class Highlighter {
     if (highlight) {
       highlight.unapply();
       delete this.highlights[id];
+      this.store.dispatch(deletePosition(id));
     }
   }
 
@@ -58,9 +60,12 @@ export default class Highlighter {
   }
 
   handleShow(show) {
+    this.show = show;
     utils.forIn(this.highlights, (id, highlight) => {
       if (show) {
         highlight.apply();
+        // refresh the y coord of highlight when shown
+        this.updatePosition(id, highlight);
       } else {
         highlight.unapply();
       }
@@ -68,6 +73,9 @@ export default class Highlighter {
   }
 
   handleResize() {
+    // don't recalculate y coords when hidden
+    if (!this.show) { return; }
+
     utils.forIn(this.highlights, (id, highlight) => {
       this.updatePosition(id, highlight);
     });

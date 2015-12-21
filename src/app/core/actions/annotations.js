@@ -1,5 +1,13 @@
 'use strict';
 
+import { annotationsSelector } from '../selectors/annotationSelectors';
+import {
+  setListenersSelector,
+  addListenersSelector,
+  delListenersSelector,
+  editListenersSelector
+} from '../selectors/listenerSelectors';
+
 const SET_ANNOTATIONS  = 'SET_ANNOTATIONS',
       ADD_ANNOTATION   = 'ADD_ANNOTATION',
       DEL_ANNOTATION   = 'DEL_ANNOTATION',
@@ -21,8 +29,8 @@ function deleteAnnotation(id) {
   return { type: DEL_ANNOTATION, id };
 }
 
-function editAnnotation(id, merges) {
-  return { type: EDIT_ANNOTATION, id, merges };
+function editAnnotation(annotation) {
+  return { type: EDIT_ANNOTATION, annotation };
 }
 
 function notify(subject, listeners=[]) {
@@ -34,27 +42,34 @@ function notify(subject, listeners=[]) {
 export function setAndNotify(annotations) {
   return (dispatch, getState) => {
     dispatch(setAnnotations(annotations));
-    return notify({ annotations }, getState().listeners.set);
+    return notify({ annotations }, setListenersSelector(getState()));
   };
 }
 
 export function addAndNotify(annotation) {
   return (dispatch, getState) => {
     dispatch(addAnnotation(annotation));
-    return notify({ annotation }, getState().listeners.add);
+    return notify({ annotation }, addListenersSelector(getState()));
   };
 }
 
 export function deleteAndNotify(id) {
   return (dispatch, getState) => {
     dispatch(deleteAnnotation(id));
-    return notify({ id }, getState().listeners.del);
+    return notify({ id }, delListenersSelector(getState()));
   };
 }
 
 export function editAndNotify(id, merges) {
   return (dispatch, getState) => {
-    dispatch(editAnnotation(id, merges));
-    return notify({ id, merges }, getState().listeners.edit);
+    let annotations = annotationsSelector(getState());
+
+    let index = annotations.findIndex(a => a.id === id);
+    if (index < 0) { return; }
+
+    let annotation = { ...annotations[index], ...merges };
+
+    dispatch(editAnnotation(annotation));
+    return notify({ annotation }, editListenersSelector(getState()));
   };
 }

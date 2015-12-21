@@ -16,8 +16,12 @@ export default class Database {
     this.db = db;
   }
 
-  create(annotation) {
+  save(annotation) {
     return this.db.annotations.put(annotation);
+  }
+
+  delete(id) {
+    return this.db.annotations.delete(id);
   }
 
   // TODO

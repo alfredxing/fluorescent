@@ -7,6 +7,7 @@
     "Thomas Liu"
   ],
   "dependencies": {
+    "babel-polyfill": "^6.3.14",
     "chrome-promise": "^1.0.3",
     "dexie": "^1.1.0",
     "redux": "^3.0.5",

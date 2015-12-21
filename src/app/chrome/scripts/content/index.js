@@ -35,18 +35,21 @@ function handleAdd({ annotation }) {
 }
 
 function handleDelete({ id }) {
-  console.log('annotation deleted: ' + JSON.stringify(id));
+  chrome.promise.runtime.sendMessage({
+    type: 'delete',
+    id
+  }).then(() =>
+    console.log('annotation deleted: ' + JSON.stringify(id))
+  );
 }
 
-function handleEdit({ id, merges }) {
-  /*
+function handleEdit({ annotation }) {
   chrome.promise.runtime.sendMessage({
     type: 'save',
     annotation
   }).then(id =>
     console.log('annotation saved with id: ' + id)
   );
-  */
 }
 
 function attachListeners(fl) {
@@ -56,22 +59,16 @@ function attachListeners(fl) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('message received: ' + message.type);
-
   switch (message.type) {
     case 'illuminate':
-      fl.illuminate();
-      break;
+      return fl.illuminate();
     case 'darken':
-      fl.darken();
-      break;
+      return fl.darken();
 
     case 'uncap':
-      fl.uncap();
-      break;
+      return fl.uncap();
     case 'cap':
-      fl.cap();
-      break;
+      return fl.cap();
 
     default:
       console.log('error, unsupported message');

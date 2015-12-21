@@ -24,12 +24,12 @@ const ui = (state, action) => {
     case types.SET_HOVERED:
       return {
         ...state,
-        hoveredId: types.id
+        hoveredId: action.id
       };
     case types.SET_FOCUSED:
       return {
         ...state,
-        focusedId: types.id
+        focusedId: action.id
       };
     case types.UNSET_ALL:
       return {

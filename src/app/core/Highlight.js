@@ -1,10 +1,12 @@
 'use strict';
 
+import { setHovered, setFocused } from './actions/ui';
 import utils from './utils/utils';
 
 export default class Highlight {
 
-  constructor(annotation) {
+  constructor(store, annotation) {
+    this.store = store;
     this.annotation = annotation;
     this.range = utils.deserialize(document, annotation.position);
     this.className = 'fl-highlight-' + Date.now();
@@ -18,11 +20,13 @@ export default class Highlight {
     );
 
     els.forEach(el => {
-      el.style.backgroundColor = 'rgba(0,220,63,0.4)';
+      el.style.backgroundColor = 'rgba(0,220,63,0.25)';
       el.style.display = 'inline';
-      el.addEventListener('mouseenter', this.handleTextHover);
-      el.addEventListener('mouseleave', this.handleTextUnhover);
-      el.addEventListener('click', this.handleTextClick);
+      el.style.transition = 'background-color 0.1s ease-in-out';
+      // TODO: is bind making separate listeners for each element?
+      el.addEventListener('mouseenter', this.handleTextHover.bind(this));
+      el.addEventListener('mouseleave', this.handleTextUnhover.bind(this));
+      el.addEventListener('click',      this.handleTextClick.bind(this));
     });
 
     this.elements = els;
@@ -40,14 +44,22 @@ export default class Highlight {
   }
 
   handleTextHover() {
-    console.log('entered');
+    this.store.dispatch(setHovered(this.annotation.id));
+    this.elements.forEach(el => {
+      el.style.backgroundColor = 'rgba(0,220,63,0.4)';
+    });
   }
 
   handleTextUnhover() {
+    this.store.dispatch(setHovered(null));
+    this.elements.forEach(el => {
+      el.style.backgroundColor = 'rgba(0,220,63,0.25)';
+    });
   }
 
-  handleTextClick() {
-    window.alert('clicked');
+  handleTextClick(e) {
+    e.stopImmediatePropagation();
+    this.store.dispatch(setFocused(this.annotation.id));
   }
 
 }
