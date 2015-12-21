@@ -11,6 +11,7 @@ riot.tag('commentList',
   // template
   `
     <comment each="{annotation in annotations}"
+             id="{annotation.id}"
              text="{annotation.comment}"
              riot-style="
                transform: translateY({ positions[annotation.id] }px)

@@ -38,15 +38,13 @@ function handleDelete({ id }) {
   console.log('annotation deleted: ' + JSON.stringify(id));
 }
 
-function handleEdit({ id, merges }) {
-  /*
+function handleEdit({ annotation }) {
   chrome.promise.runtime.sendMessage({
     type: 'save',
     annotation
   }).then(id =>
     console.log('annotation saved with id: ' + id)
   );
-  */
 }
 
 function attachListeners(fl) {

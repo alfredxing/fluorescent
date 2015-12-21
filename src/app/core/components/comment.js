@@ -1,6 +1,7 @@
 'use strict';
 
 import riot from 'riot';
+import { editAndNotify, deleteAndNotify } from '../actions/annotations';
 
 riot.tag('comment',
   // template
@@ -69,6 +70,11 @@ riot.tag('comment',
       e.style.height = (21 + e.scrollHeight) + 'px';
     };
 
+    this.id = opts.id;
+
+    this.mixin('redux');
+    this.dispatchify({ editAndNotify, deleteAndNotify });
+
     const editHandler = () => {
       setMode(EDIT_MODE);
 
@@ -86,7 +92,10 @@ riot.tag('comment',
 
     const editSaveHandler = () => {
       setMode(DEFAULT_MODE);
-      this.noteText.innerHTML = this.editTextArea.value;
+      let newText = this.editTextArea.value;
+
+      this.noteText.innerHTML = newText;
+      this.editAndNotify(this.id, { comment: newText });
     };
 
     this.editTextArea.addEventListener('keyup', resizeTextArea);
