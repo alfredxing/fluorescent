@@ -36,14 +36,14 @@ const fontStyles = resourcePath => `
   }
   @font-face {
     font-family: 'Roboto';
-    src:  url('${resourcePath}/fonts/Roboto-Bold.eot');
+    src:  url('${resourcePath}/fonts/roboto/Roboto-Bold.eot');
     src:  local('Roboto Bold'),
           local('Roboto-Bold'),
-          url('${resourcePath}/fonts/Roboto-Bold.eot?#iefix') format('embedded-opentype'),
-          url('${resourcePath}/fonts/Roboto-Bold.woff2') format('woff2'),
-          url('${resourcePath}/fonts/Roboto-Bold.woff') format('woff'),
-          url('${resourcePath}/fonts/Roboto-Bold.ttf') format('truetype'),
-          url('${resourcePath}/fonts/Roboto-Bold.svg#Roboto') format('svg');
+          url('${resourcePath}/fonts/roboto/Roboto-Bold.eot?#iefix') format('embedded-opentype'),
+          url('${resourcePath}/fonts/roboto/Roboto-Bold.woff2') format('woff2'),
+          url('${resourcePath}/fonts/roboto/Roboto-Bold.woff') format('woff'),
+          url('${resourcePath}/fonts/roboto/Roboto-Bold.ttf') format('truetype'),
+          url('${resourcePath}/fonts/roboto/Roboto-Bold.svg#Roboto') format('svg');
     font-weight: 700;
     font-style: normal;
   }

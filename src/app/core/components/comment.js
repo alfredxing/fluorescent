@@ -7,47 +7,49 @@ import { setHovered, setFocused } from '../actions/ui';
 riot.tag('comment',
   // template
   `
-    <div class="{'content': true, 'hide': mode != 0}">
-      <div class="{'note-text': true}" name="noteText">{opts.text}</div>
-      <div class="{'datetime': true}" name="dateTime"></div>
-    </div>
+    <div class="{'comment-container': true}">
+      <div class="{'content': true, 'hide': mode != 0}">
+        <div class="{'note-text': true}" name="noteText">{opts.text}</div>
+        <div class="{'datetime': true}" name="dateTime"></div>
+      </div>
 
-    <textarea class="{'edit-text-area': true, 'hide': mode != 1}"
-              name="editTextArea"
-              maxlength="300">
-    </textarea>
+      <textarea class="{'edit-text-area': true, 'hide': mode != 1}"
+                name="editTextArea"
+                maxlength="300">
+      </textarea>
 
-    <div class="{'toolbar': true, 'hide': mode != 0}">
-      <button class="{'icon-btn': true}" name="changeColor">
-        <i class="{'material-icons' : true}">format_color_fill</i>
-      </button>
-      <button class="{'icon-btn': true}" name="reselect">
-        <i class="{'material-icons': true}">text_format</i>
-      </button>
-      <button class="{'icon-btn': true}" name="delete">
-        <i class="{ 'material-icons': true }">delete</i>
-      </button>
-      <button class="{'icon-btn': true, 'edit': true}" name="edit">
-        Edit
-      </button>
-    </div>
+      <div class="{'toolbar': true, 'hide': mode != 0}">
+        <button class="{'icon-btn': true}" name="changeColor">
+          <i class="{'material-icons' : true}">format_color_fill</i>
+        </button>
+        <button class="{'icon-btn': true}" name="reselect">
+          <i class="{'material-icons': true}">text_format</i>
+        </button>
+        <button class="{'icon-btn': true}" name="delete">
+          <i class="{ 'material-icons': true }">delete</i>
+        </button>
+        <button class="{'icon-btn': true, 'edit': true}" name="edit">
+          Edit
+        </button>
+      </div>
 
-    <div class="{'toolbar': true, 'hide': mode != 1}">
-      <button class="{'icon-btn': true}" name="textBold">
-        <i class="{'material-icons': true}">format_bold</i>
-      </button>
-      <button class="{'icon-btn': true}" name="textItalic">
-        <i class="{'material-icons': true}">format_italic</i>
-      </button>
-      <button class="{'icon-btn': true}" name="textUnderline">
-        <i class="{'material-icons': true}">format_underline</i>
-      </button>
-      <button class="{'icon-btn': true, 'edit-save': true}" name="editSave">
-        Save
-      </button>
-      <button class="{'icon-btn': true, 'edit-cancel': true}" name="editCancel">
-        Cancel
-      </button>
+      <div class="{'toolbar': true, 'hide': mode != 1}">
+        <button class="{'icon-btn': true}" name="textBold">
+          <i class="{'material-icons': true}">format_bold</i>
+        </button>
+        <button class="{'icon-btn': true}" name="textItalic">
+          <i class="{'material-icons': true}">format_italic</i>
+        </button>
+        <button class="{'icon-btn': true}" name="textUnderline">
+          <i class="{'material-icons': true}">format_underline</i>
+        </button>
+        <button class="{'icon-btn': true, 'edit-save': true}" name="editSave">
+          Save
+        </button>
+        <button class="{'icon-btn': true, 'edit-cancel': true}" name="editCancel">
+          Cancel
+        </button>
+      </div>
     </div>
   `,
   // script
@@ -147,24 +149,47 @@ export const commentStyles = `
     top: 0;
     left: 0;
     pointer-events: auto;
+    padding-bottom: 0;
     opacity: 1;
     transform-origin: 100% 50%;
     transition: transform 0.1s ease-in-out,
-                opacity 0.1s ease-in-out;
+                opacity 0.1s ease-in-out,
+                padding 0.1s ease-in-out;
+  }
+  comment.focused {
+    padding-bottom: 31px;
   }
   comment.hidden {
     opacity: 0;
     pointer-events: none;
   }
-  comment.focused .toolbar,
+  comment.focused .toolbar {
+    opacity: 1;
+    transform: translateY(31px);
+    pointer-events: auto;
+  }
+  comment.focused .toolbar.hide {
+    opacity: 0;
+    display: block;
+    pointer-events: none;
+  }
   comment.focused .edit-text-area {
     display: block;
   }
   comment.focused .hide {
     display: none;
   }
-  comment > * {
+  comment > *,
+  .comment-container > * {
     box-sizing: inherit;
+  }
+  .comment-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  button {
+    font-family: inherit;
   }
   .content {
     padding: 14px 18px;
@@ -197,7 +222,15 @@ export const commentStyles = `
     border-top: 1px solid rgba(0,0,0,0.08);
     height: 31px;
     box-sizing: inherit;
-    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0px);
+    transition: opacity 0.1s ease-in-out,
+                transform 0.1s ease-in-out;
   }
   .toolbar > * {
     height: 31px;
@@ -222,6 +255,8 @@ export const commentStyles = `
     font-weight: bold;
     padding-left: 14px;
     padding-right: 14px;
+    padding-top: 7px;
+    line-height: 1.5em;
   }
   .edit-save {
     background-color: rgba(35,163,8,1);
