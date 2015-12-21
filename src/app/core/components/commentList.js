@@ -10,14 +10,18 @@ import { showSelector } from '../selectors/uiSelectors';
 riot.tag('commentList',
   // template
   `
-    <comment each="{annotation in annotations}"
-             id="{annotation.id}"
-             text="{annotation.comment}"
-             riot-style="
-               transform: translateY({ positions[annotation.id] }px)
-                          translateX({ show ? 0 : 330}px)
-             ">
-    </comment>
+    <div class="{'comment-list-container': true}">
+      <comment each="{annotation in annotations}"
+               id="{annotation.id}"
+               text="{annotation.comment}"
+               riot-style="
+                 opacity: { show ? 1 : 0 };
+                 transform: translateY({positions[annotation.id]}px)
+                            scale({show ? 1 : 0.75})
+                            rotateY({show ? 0 : -10}deg);
+               ">
+      </comment>
+    </div>
   `,
   // scripts
   function(opts) {
@@ -46,7 +50,11 @@ riot.tag('commentList',
 const styles = `
   commentList {
     position: relative;
-    padding-right: 330px;
+    margin-left: 10px;
+    display: block;
+  }
+  .comment-list-container {
+    perspective: 1600px;
   }
   ${commentStyles}
 `;

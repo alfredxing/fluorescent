@@ -120,7 +120,9 @@ export const commentStyles = `
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.2s ease-in-out;
+    transform-origin: 100% 50%;
+    transition: transform 0.15s ease-in-out,
+                opacity 0.15s ease-in-out;
   }
   comment > * {
     box-sizing: inherit;

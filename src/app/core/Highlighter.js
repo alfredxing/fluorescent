@@ -16,6 +16,7 @@ export default class Highlighter {
 
     this.store = store;
     this.highlights = highlights;
+    this.show = true;
 
     store.dispatch(addListener(events.SET,  this.handleSet.bind(this)));
     store.dispatch(addListener(events.ADD,  this.handleAdd.bind(this)));
@@ -58,9 +59,12 @@ export default class Highlighter {
   }
 
   handleShow(show) {
+    this.show = show;
     utils.forIn(this.highlights, (id, highlight) => {
       if (show) {
         highlight.apply();
+        // refresh the y coord of highlight when shown
+        this.updatePosition(id, highlight);
       } else {
         highlight.unapply();
       }
@@ -68,6 +72,9 @@ export default class Highlighter {
   }
 
   handleResize() {
+    // don't recalculate y coords when hidden
+    if (!this.show) { return; }
+
     utils.forIn(this.highlights, (id, highlight) => {
       this.updatePosition(id, highlight);
     });

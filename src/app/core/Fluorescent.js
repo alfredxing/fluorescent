@@ -70,7 +70,14 @@ function initContainer() {
   let container = document.createElement('fl-comments-' + Date.now()),
       shadow    = container.createShadowRoot();
 
-  container.style.cssText = `position:absolute;top:0;right:0;z-index:9999`;
+  container.style.cssText = `
+    width: 340px;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+  `;
 
   let style       = document.createElement('style'),
       commentList = document.createElement('commentList');
