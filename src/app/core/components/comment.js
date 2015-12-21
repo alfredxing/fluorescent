@@ -103,7 +103,7 @@ riot.tag('comment',
 
     const deleteHandler = () => {
       this.deleteAndNotify(this.id);
-    }
+    };
 
     const clickHandler = e => {
       e.stopImmediatePropagation();
@@ -112,11 +112,11 @@ riot.tag('comment',
 
     const hoverHandler = () => {
       this.setHovered(this.id);
-    }
+    };
 
     const unhoverHandler = () => {
       this.setHovered(null);
-    }
+    };
 
     this.editTextArea.addEventListener('keyup', resizeTextArea);
     this.edit.addEventListener('click', editHandler);
@@ -142,7 +142,7 @@ export const commentStyles = `
     border-top: 3px solid rgba(47,226,103,0.4);
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    width: 320px;
+    width: 280px;
     position: absolute;
     top: 0;
     left: 0;
@@ -183,7 +183,7 @@ export const commentStyles = `
     border-radius: 0;
     outline: none;
     resize: none;
-    width: 302px;
+    width: 262px;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;

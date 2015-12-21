@@ -43,6 +43,7 @@ export default class Highlight {
     return rectangle.top + window.scrollY;
   }
 
+  // TODO: keep strengthened highlight when focused, activate hover from comment
   handleTextHover() {
     this.store.dispatch(setHovered(this.annotation.id));
     this.elements.forEach(el => {
