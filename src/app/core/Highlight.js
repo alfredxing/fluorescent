@@ -22,7 +22,7 @@ export default class Highlight {
     els.forEach(el => {
       el.style.backgroundColor = 'rgba(0,220,63,0.25)';
       el.style.display = 'inline';
-      el.style.transition = 'background-color 0.1s ease-in-out';
+      el.style.transition = 'background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
       // TODO: is bind making separate listeners for each element?
       el.addEventListener('mouseenter', this.handleTextHover.bind(this));
       el.addEventListener('mouseleave', this.handleTextUnhover.bind(this));

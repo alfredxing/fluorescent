@@ -152,9 +152,9 @@ export const commentStyles = `
     padding-bottom: 0;
     opacity: 1;
     transform-origin: 100% 50%;
-    transition: transform 0.1s ease-in-out,
-                opacity 0.1s ease-in-out,
-                padding 0.1s ease-in-out;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   comment.focused {
     padding-bottom: 31px;
@@ -229,8 +229,8 @@ export const commentStyles = `
     opacity: 0;
     pointer-events: none;
     transform: translateY(0px);
-    transition: opacity 0.1s ease-in-out,
-                transform 0.1s ease-in-out;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .toolbar > * {
     height: 31px;
