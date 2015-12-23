@@ -1,6 +1,11 @@
 'use strict';
 
 import { setHovered, setFocused } from './actions/ui';
+import observeStore from './store/observeStore';
+import {
+  hoveredSelector,
+  focusedSelector
+} from './selectors/uiSelectors';
 import utils from './utils/utils';
 
 export default class Highlight {
@@ -11,6 +16,9 @@ export default class Highlight {
     this.range = utils.deserialize(document, annotation.position);
     this.className = 'fl-highlight-' + Date.now();
     this.elements = [];
+    this.unsubscribeHover = null;
+    this.unsubscribeFocus = null;
+    this.focused = false;
     this.apply();
   }
 
@@ -30,11 +38,26 @@ export default class Highlight {
     });
 
     this.elements = els;
+
+    if (!this.unsubscribeStore && !this.unsubscribeFocus) {
+      this.unsubscribeStore = observeStore(
+        this.store, hoveredSelector, this.handleHovered.bind(this)
+      );
+      this.unsubscribeFocus = observeStore(
+        this.store, focusedSelector, this.handleFocused.bind(this)
+      );
+    }
   }
 
   unapply() {
     utils.unapplyClassToRange(document, this.range, this.className);
     this.elements = [];
+    if (this.unsubscribeStore && this.unsubscribeFocus) {
+      this.unsubscribeStore();
+      this.unsubscribeFocus();
+      this.unsubscribeStore = null;
+      this.unsubscribeFocus = null;
+    }
   }
 
   getYOffset() {
@@ -46,15 +69,26 @@ export default class Highlight {
   // TODO: keep strengthened highlight when focused, activate hover from comment
   handleTextHover() {
     this.store.dispatch(setHovered(this.annotation.id));
-    this.elements.forEach(el => {
-      el.style.backgroundColor = 'rgba(0,220,63,0.4)';
-    });
   }
 
   handleTextUnhover() {
     this.store.dispatch(setHovered(null));
+  }
+
+  handleHovered(id) {
+    let isHovered = id === this.annotation.id;
+    this.setColor(isHovered || this.focused);
+  }
+
+  handleFocused(id) {
+    let isFocused = id === this.annotation.id;
+    this.focused = isFocused;
+    this.setColor(isFocused);
+  }
+
+  setColor(isActive) {
     this.elements.forEach(el => {
-      el.style.backgroundColor = 'rgba(0,220,63,0.25)';
+      el.style.backgroundColor = `rgba(0,220,63, ${isActive ? 0.4 : 0.25})`;
     });
   }
 
