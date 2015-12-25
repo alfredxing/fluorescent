@@ -45,7 +45,9 @@ function compile(src, dest, bundleName, entry, watch, prod) {
     bundler.on('log', plugins.util.log);
   }
 
-  bundler.transform(babelify);
+  bundler.transform(babelify, {
+    presets: ["es2015", "stage-0"]
+  });
 
   function rebundle() {
     var bundleStream = bundler.bundle()

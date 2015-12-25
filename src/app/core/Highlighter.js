@@ -1,52 +1,84 @@
 'use strict';
 
+import observeStore from './store/observeStore';
+import { addListener, events } from './actions/listeners';
+import { putPosition, deletePosition } from './actions/positions';
+import { showSelector } from './selectors/uiSelectors';
+import Highlight from './Highlight';
 import utils from './utils/utils';
-import Annotation from './Annotation';
 
 export default class Highlighter {
 
-  constructor(window) {
-    this.document = window.document;
-    this._url = utils.getPageUrl(window);
-    this._host = utils.getPageHost(window);
+  constructor(store, annotations=[]) {
+    let highlights = {};
 
-    this._listeners = [];
+    annotations.forEach(annotation => this.handleAdd({ annotation }));
+
+    this.store = store;
+    this.highlights = highlights;
+    this.show = true;
+
+    store.dispatch(addListener(events.SET,  this.handleSet.bind(this)));
+    store.dispatch(addListener(events.ADD,  this.handleAdd.bind(this)));
+    store.dispatch(addListener(events.DEL,  this.handleDelete.bind(this)));
+    store.dispatch(addListener(events.EDIT, this.handleEdit.bind(this)));
+
+    observeStore(store, showSelector, this.handleShow.bind(this));
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
-  uncap(cb) {
-    this._addListener(() => {
-      let selectedRange = utils.getSelectedRange(this.document);
-      if (!selectedRange.collapsed) {
-        cb(this._buildAnnotation(selectedRange));
+  updatePosition(id, highlight) {
+    this.store.dispatch(
+      putPosition(id, highlight.getYOffset())
+    );
+  }
+
+  handleSet({ annotations }) {
+    annotations.forEach(annotation => this.handleAdd({ annotation }));
+  }
+
+  handleAdd({ annotation }) {
+    let highlight = new Highlight(this.store, annotation);
+    this.updatePosition(annotation.id, highlight);
+
+    this.highlights[annotation.id] = highlight;
+  }
+
+  handleDelete({ id }) {
+    let highlight = this.highlights[id];
+
+    if (highlight) {
+      highlight.unapply();
+      delete this.highlights[id];
+      this.store.dispatch(deletePosition(id));
+    }
+  }
+
+  // TODO
+  handleEdit({ id, merges }) {
+
+  }
+
+  handleShow(show) {
+    this.show = show;
+    utils.forIn(this.highlights, (id, highlight) => {
+      if (show) {
+        highlight.apply();
+        // refresh the y coord of highlight when shown
+        this.updatePosition(id, highlight);
+      } else {
+        highlight.unapply();
       }
     });
   }
 
-  cap() {
-    this._clearListeners();
-  }
+  handleResize() {
+    // don't recalculate y coords when hidden
+    if (!this.show) { return; }
 
-  _buildAnnotation(range) {
-    let url = this._url,
-        position = utils.serialize(this.document, range),
-        host = this._host,
-        summary = utils.abbreviate(range.toString(), 200);
-
-    return new Annotation(url, position, host, summary, '');
-  }
-
-  _addListener(listener) {
-    if (listener && this._listeners.length === 0) {
-      this._listeners.push(listener);
-      this.document.addEventListener('mouseup', listener);
-    }
-  }
-
-  _clearListeners() {
-    while (this._listeners.length) {
-      let listener = this._listeners.pop();
-      this.document.removeEventListener('mouseup', listener);
-    }
+    utils.forIn(this.highlights, (id, highlight) => {
+      this.updatePosition(id, highlight);
+    });
   }
 
 }

@@ -1,74 +1,74 @@
 'use strict';
 
+import loadResources from './loadResources';
 import utils from '../../../core/utils/utils';
-import Annotator from '../../../core/Annotator';
+import Fluorescent from '../../../core/Fluorescent';
+
+loadResources();
 
 chrome.promise = new ChromePromise();
 
-let annotator;
+let fl;
 
 function init() {
+  if (fl) { fl.darken(); }
+  fl = new Fluorescent();
+
   return chrome.promise.runtime.sendMessage({
     type: 'findByUrl',
     url: utils.getPageUrl(window)
   }).then(annotations => {
-    if (annotator) { annotator.darken(); }
-    annotator = new Annotator(window, annotations);
-    attachListeners(annotator);
+    fl.set(annotations);
+    attachListeners(fl);
   });
 }
 
 init(); window.addEventListener('hashchange', init);
 
-let listeners = {
+function handleAdd({ annotation }) {
+  chrome.promise.runtime.sendMessage({
+    type: 'save',
+    annotation
+  }).then(id =>
+    console.log('annotation saved with id: ' + id)
+  );
+}
 
-  added(annotation) {
-    chrome.promise.runtime.sendMessage({
-      type: 'save',
-      annotation
-    }).then(id =>
-      console.log('annotation saved with id: ' + id)
-    );
-  },
+function handleDelete({ id }) {
+  chrome.promise.runtime.sendMessage({
+    type: 'delete',
+    id
+  }).then(() =>
+    console.log('annotation deleted: ' + JSON.stringify(id))
+  );
+}
 
-  removed(annotation) {
-    console.log('annotation deleted: ' + JSON.stringify(annotation));
-  },
+function handleEdit({ annotation }) {
+  chrome.promise.runtime.sendMessage({
+    type: 'save',
+    annotation
+  }).then(id =>
+    console.log('annotation saved with id: ' + id)
+  );
+}
 
-  edited(annotation) {
-    chrome.promise.runtime.sendMessage({
-      type: 'save',
-      annotation
-    }).then(id =>
-      console.log('annotation saved with id: ' + id)
-    );
-  }
-
-};
-
-function attachListeners(annotator) {
-  annotator.added.add(listeners.added);
-  annotator.removed.add(listeners.removed);
-  annotator.edited.add(listeners.edited);
+function attachListeners(fl) {
+  fl.subscribe('add', handleAdd);
+  fl.subscribe('delete', handleDelete);
+  fl.subscribe('edit', handleEdit);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('message received: ' + message.type);
-
   switch (message.type) {
     case 'illuminate':
-      annotator.illuminate();
-      break;
+      return fl.illuminate();
     case 'darken':
-      annotator.darken();
-      break;
+      return fl.darken();
 
     case 'uncap':
-      annotator.uncap();
-      break;
+      return fl.uncap();
     case 'cap':
-      annotator.cap();
-      break;
+      return fl.cap();
 
     default:
       console.log('error, unsupported message');
