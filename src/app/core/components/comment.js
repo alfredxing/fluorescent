@@ -8,7 +8,7 @@ riot.tag('comment',
   // template
   `
     <div class="{'comment-container': true}">
-      <div class="{'content': true, 'hide': mode != 0}">
+      <div class="{'content': true, 'hide': mode == 1}">
         <div class="{'note-text': true}" name="noteText">{opts.text}</div>
         <div class="{'datetime': true}" name="dateTime"></div>
       </div>
@@ -50,13 +50,29 @@ riot.tag('comment',
           Cancel
         </button>
       </div>
+
+      <div class="{'toolbar': true, 'hide': mode != 2}">
+        <button class="{'icon-btn': true}" name="changeColorCancel">
+          <i class="{'material-icons': true}">close</i>
+        </button>
+        <button class="{'icon-btn': true}" name="colorGreen">
+          <div class="{'color-circle': true, 'color-green': true}"></div>
+        </button>
+        <button class="{'icon-btn': true}" name="colorYellow">
+          <div class="{'color-circle': true, 'color-yellow': true}"></div>
+        </button>
+        <button class="{'icon-btn': true}" name="colorBlue">
+          <div class="{'color-circle': true, 'color-blue': true}"></div>
+        </button>
+      </div>
+
     </div>
   `,
   // script
   function(opts) {
     const DEFAULT_MODE = 0,
           EDIT_MODE = 1,
-          FORMAT_MODE = 2;
+          COLOR_MODE = 2;
 
     this.mode = DEFAULT_MODE;
 
@@ -79,6 +95,10 @@ riot.tag('comment',
     this.dispatchify({
       editAndNotify, deleteAndNotify, setHovered, setFocused
     });
+
+    const changeColorHandler = () => {
+      setMode(COLOR_MODE);
+    };
 
     const editHandler = () => {
       setMode(EDIT_MODE);
@@ -124,6 +144,9 @@ riot.tag('comment',
     this.edit.addEventListener('click', editHandler);
     this.editCancel.addEventListener('click', editCancelHandler);
     this.editSave.addEventListener('click', editSaveHandler);
+
+    this.changeColor.addEventListener('click', changeColorHandler);
+    this.changeColorCancel.addEventListener('click', editCancelHandler);
 
     this.delete.addEventListener('click', deleteHandler);
 
@@ -249,6 +272,20 @@ export const commentStyles = `
   }
   .icon-btn:first-child {
     margin-left: 8px;
+  }
+  .color-circle {
+    border-radius: 9999px;
+    width: 17px;
+    height: 17px;
+  }
+  .color-green {
+    background: rgba(0,220,63,0.5);
+  }
+  .color-yellow {
+    background: rgba(242,197,10,0.5);
+  }
+  .color-blue {
+    background: rgba(7,198,240,0.5);
   }
   .edit, .edit-save, .edit-cancel {
     float: right;
