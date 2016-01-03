@@ -1,15 +1,17 @@
 'use strict';
 
-const ILLUMINATE  = 'ILLUMINATE',
-      DARKEN      = 'DARKEN',
-      SET_HOVERED = 'SET_HOVERED',
-      SET_FOCUSED = 'SET_FOCUSED',
-      UNSET_ALL   = 'UNSET_ALL',
-      UNCAP       = 'UNCAP',
-      CAP         = 'CAP';
+const ILLUMINATE   = 'ILLUMINATE',
+      DARKEN       = 'DARKEN',
+      SET_HOVERED  = 'SET_HOVERED',
+      SET_FOCUSED  = 'SET_FOCUSED',
+      UNSET_ALL    = 'UNSET_ALL',
+      SET_RESELECT = 'SET_RESELECT',
+      UNCAP        = 'UNCAP',
+      CAP          = 'CAP';
 
 export const types = {
-  ILLUMINATE, DARKEN, SET_HOVERED, SET_FOCUSED, UNSET_ALL, UNCAP, CAP
+  ILLUMINATE, DARKEN, SET_HOVERED, SET_FOCUSED, UNSET_ALL,
+  SET_RESELECT, UNCAP, CAP
 };
 
 export function illuminate() {
@@ -30,6 +32,10 @@ export function setFocused(id) {
 
 export function unsetAll() {
   return { type: UNSET_ALL };
+}
+
+export function setReselect(id) {
+  return { type: SET_RESELECT, id };
 }
 
 export function uncap() {

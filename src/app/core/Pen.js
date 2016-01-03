@@ -3,9 +3,9 @@
 import utils from './utils/utils';
 import Annotation from './Annotation';
 import observeStore from './store/observeStore';
-import { uncappedSelector } from './selectors/uiSelectors';
-import { addAndNotify } from './actions/annotations';
-import { cap } from './actions/ui';
+import { uncappedSelector, reselectSelector } from './selectors/uiSelectors';
+import { addAndNotify, editAndNotify } from './actions/annotations';
+import { cap, setReselect } from './actions/ui';
 
 export default class Pen {
 
@@ -19,6 +19,7 @@ export default class Pen {
     this.store = store;
 
     observeStore(store, uncappedSelector, this.handleUncapped.bind(this));
+    observeStore(store, reselectSelector, this.handleReselect.bind(this));
   }
 
   handleUncapped(uncapped) {
@@ -33,6 +34,22 @@ export default class Pen {
         let annotation = this.buildAnnotation(selectedRange);
         this.store.dispatch(cap());
         this.store.dispatch(addAndNotify(annotation));
+      }
+    });
+  }
+
+  handleReselect(id) {
+    if (!id) {
+      return this.clearListeners();
+    }
+
+    this.addListener(() => {
+      let selectedRange = utils.getSelectedRange(document);
+
+      if (!selectedRange.collapsed) {
+        let position = utils.serialize(document, selectedRange);
+        this.store.dispatch(setReselect(null));
+        this.store.dispatch(editAndNotify(id, { position }));
       }
     });
   }

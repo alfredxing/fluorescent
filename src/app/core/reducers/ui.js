@@ -6,6 +6,7 @@ const ui = (state, action) => {
   state = state || {
     hoveredId: null,
     focusedId: null,
+    reselectId: null,
     show: true,
     uncapped: false
   };
@@ -36,6 +37,11 @@ const ui = (state, action) => {
         ...state,
         hoveredId: null,
         focusedId: null
+      };
+    case types.SET_RESELECT:
+      return {
+        ...state,
+        reselectId: action.id
       };
     case types.UNCAP:
       return {
