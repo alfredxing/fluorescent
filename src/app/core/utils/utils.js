@@ -29,7 +29,7 @@ export default {
 
   getSelectedRange(document) {
     let selection = document.getSelection(),
-        range     = selection.getRangeAt(0);
+        range     = (selection.rangeCount > 0) ? selection.getRangeAt(0) : null;
 
     selection.removeAllRanges();
     return range;
