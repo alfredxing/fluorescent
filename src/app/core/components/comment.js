@@ -2,7 +2,7 @@
 
 import riot from 'riot';
 import { editAndNotify, deleteAndNotify } from '../actions/annotations';
-import { setHovered, setFocused } from '../actions/ui';
+import { setHovered, setFocused, setReselect } from '../actions/ui';
 
 riot.tag('comment',
   // template
@@ -93,12 +93,16 @@ riot.tag('comment',
 
     this.mixin('redux');
     this.dispatchify({
-      editAndNotify, deleteAndNotify, setHovered, setFocused
+      editAndNotify, deleteAndNotify, setHovered, setFocused, setReselect
     });
 
     const changeColorHandler = () => {
       setMode(COLOR_MODE);
     };
+
+    const reselectHandler = () => {
+      this.setReselect(this.id);
+    }
 
     const editHandler = () => {
       setMode(EDIT_MODE);
@@ -144,6 +148,8 @@ riot.tag('comment',
     this.edit.addEventListener('click', editHandler);
     this.editCancel.addEventListener('click', editCancelHandler);
     this.editSave.addEventListener('click', editSaveHandler);
+
+    this.reselect.addEventListener('click', reselectHandler);
 
     this.changeColor.addEventListener('click', changeColorHandler);
     this.changeColorCancel.addEventListener('click', editCancelHandler);

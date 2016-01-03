@@ -60,6 +60,16 @@ export default class Highlight {
     }
   }
 
+  update(annotation) {
+    if (this.annotation.position !== annotation.position) {
+      this.unapply();
+      this.range = utils.deserialize(document, annotation.position);
+      this.apply();
+    }
+
+    this.annotation = annotation;
+  }
+
   getYOffset() {
     if (this.elements.length === 0) { return 0; }
     let rectangle = this.elements[0].getBoundingClientRect();

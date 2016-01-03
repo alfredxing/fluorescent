@@ -54,9 +54,12 @@ export default class Highlighter {
     }
   }
 
-  // TODO
-  handleEdit({ id, merges }) {
+  handleEdit({ annotation }) {
+    let highlight = this.highlights[annotation.id];
 
+    if (highlight) {
+      highlight.update(annotation);
+    }
   }
 
   handleShow(show) {
