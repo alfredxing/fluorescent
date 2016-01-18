@@ -100,9 +100,14 @@ riot.tag('comment',
       setMode(COLOR_MODE);
     };
 
+    const pickColorHandler = color => {
+      setMode(DEFAULT_MODE);
+      this.editAndNotify(this.id, { color });
+    };
+
     const reselectHandler = () => {
       this.setReselect(this.id);
-    }
+    };
 
     const editHandler = () => {
       setMode(EDIT_MODE);
@@ -154,6 +159,10 @@ riot.tag('comment',
     this.changeColor.addEventListener('click', changeColorHandler);
     this.changeColorCancel.addEventListener('click', editCancelHandler);
 
+    this.colorGreen.addEventListener('click', () => pickColorHandler('#00DC3F'));
+    this.colorYellow.addEventListener('click', () => pickColorHandler('#F2C50A'));
+    this.colorBlue.addEventListener('click', () => pickColorHandler('#07C6F0'));
+
     this.delete.addEventListener('click', deleteHandler);
 
     this.root.addEventListener('click', clickHandler);
@@ -170,7 +179,6 @@ export const commentStyles = `
     font-size: 14px;
     line-height: 1.5em;
     background: #fff;
-    border-top: 3px solid rgba(47,226,103,0.4);
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     width: 280px;

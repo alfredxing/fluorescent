@@ -18,6 +18,7 @@ export default class Highlight {
     this.elements = [];
     this.unsubscribeHover = null;
     this.unsubscribeFocus = null;
+    this.hovered = false;
     this.focused = false;
     this.apply();
   }
@@ -28,7 +29,6 @@ export default class Highlight {
     );
 
     els.forEach(el => {
-      el.style.backgroundColor = 'rgba(0,220,63,0.25)';
       el.style.display = 'inline';
       el.style.transition = 'background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
       // TODO: is bind making separate listeners for each element?
@@ -38,6 +38,7 @@ export default class Highlight {
     });
 
     this.elements = els;
+    this.refreshColor();
 
     if (!this.unsubscribeStore && !this.unsubscribeFocus) {
       this.unsubscribeStore = observeStore(
@@ -65,6 +66,8 @@ export default class Highlight {
       this.unapply();
       this.range = utils.deserialize(document, annotation.position);
       this.apply();
+    } else if (this.annotation.color !== annotation.color) {
+      this.refreshColor();
     }
 
     this.annotation = annotation;
@@ -86,19 +89,22 @@ export default class Highlight {
   }
 
   handleHovered(id) {
-    let isHovered = id === this.annotation.id;
-    this.setColor(isHovered || this.focused);
+    this.hovered = id === this.annotation.id;
+    this.refreshColor();
   }
 
   handleFocused(id) {
-    let isFocused = id === this.annotation.id;
-    this.focused = isFocused;
-    this.setColor(isFocused);
+    this.focused = id === this.annotation.id;
+    this.refreshColor();
   }
 
-  setColor(isActive) {
+  refreshColor() {
+    let isActive = this.hovered || this.focused
+      , {r,g,b} = utils.hexToRGB(this.annotation.color || '#00DC3F')
+      , rgbaStr = `rgba(${r},${g},${b},${isActive ? 0.4 : 0.25})`;
+
     this.elements.forEach(el => {
-      el.style.backgroundColor = `rgba(0,220,63, ${isActive ? 0.4 : 0.25})`;
+      el.style.backgroundColor = rgbaStr;
     });
   }
 
