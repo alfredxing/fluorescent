@@ -62,15 +62,16 @@ export default class Highlight {
   }
 
   update(annotation) {
-    if (this.annotation.position !== annotation.position) {
+    let prev = this.annotation;
+    this.annotation = annotation;
+
+    if (this.annotation.position !== prev.position) {
       this.unapply();
       this.range = utils.deserialize(document, annotation.position);
       this.apply();
-    } else if (this.annotation.color !== annotation.color) {
+    } else if (this.annotation.color !== prev.color) {
       this.refreshColor();
     }
-
-    this.annotation = annotation;
   }
 
   getYOffset() {
