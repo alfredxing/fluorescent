@@ -1,11 +1,11 @@
 'use strict';
 
 var gulp   = require('gulp'),
-    server = require('karma').server;
+    Server = require('karma').Server;
 
 gulp.task('test', function(done) {
-  server.start({
+  new Server({
     configFile: process.cwd() + '/karma.conf.js',
     singleRun: true
-  }, done);
+  }, done).start();
 });

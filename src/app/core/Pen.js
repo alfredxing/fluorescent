@@ -30,7 +30,7 @@ export default class Pen {
     this.addListener(() => {
       let selectedRange = utils.getSelectedRange(document);
 
-      if (!selectedRange.collapsed) {
+      if (selectedRange && !selectedRange.collapsed) {
         let annotation = this.buildAnnotation(selectedRange);
         this.store.dispatch(cap());
         this.store.dispatch(addAndNotify(annotation));
@@ -46,7 +46,7 @@ export default class Pen {
     this.addListener(() => {
       let selectedRange = utils.getSelectedRange(document);
 
-      if (!selectedRange.collapsed) {
+      if (selectedRange && !selectedRange.collapsed) {
         let position = utils.serialize(document, selectedRange);
         this.store.dispatch(setReselect(null));
         this.store.dispatch(editAndNotify(id, { position }));

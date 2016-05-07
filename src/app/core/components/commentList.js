@@ -1,6 +1,7 @@
 'use strict';
 
 import riot from 'riot';
+import utils from '../utils/utils';
 import './comment';
 import { commentStyles } from './comment';
 import { unsetAll } from '../actions/ui';
@@ -25,6 +26,7 @@ riot.tag('commentList',
                  hidden:  !show
                }"
                riot-style="
+                 border-top: 3px solid {hexToRGBA(annotation.color)};
                  transform: translateY({positions[annotation.id]}px)
                             translateX({(annotation.id === focusedId ||
                                          annotation.id === hoveredId) ?
@@ -42,6 +44,11 @@ riot.tag('commentList',
 
     this.mixin('redux');
     this.dispatchify({ unsetAll });
+
+    this.hexToRGBA = hex => {
+      let {r,g,b} = utils.hexToRGB(hex || '#00DC3F');
+      return `rgba(${r},${g},${b},0.4)`;
+    }
 
     this.show = true;
 

@@ -27,9 +27,18 @@ export default {
     return url;
   },
 
+  hexToRGB(hex) {
+    let [,r,g,b] = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return {
+      r: parseInt(r, 16),
+      g: parseInt(g, 16),
+      b: parseInt(b, 16)
+    };
+  },
+
   getSelectedRange(document) {
     let selection = document.getSelection(),
-        range     = selection.getRangeAt(0);
+        range     = (selection.rangeCount > 0) ? selection.getRangeAt(0) : null;
 
     selection.removeAllRanges();
     return range;

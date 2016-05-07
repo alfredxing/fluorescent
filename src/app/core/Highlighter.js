@@ -59,6 +59,7 @@ export default class Highlighter {
 
     if (highlight) {
       highlight.update(annotation);
+      this.updatePosition(annotation.id, highlight);
     }
   }
 
