@@ -1,12 +1,12 @@
 'use strict';
 
+import ChromePromise from 'chrome-promise';
 import loadResources from './loadResources';
 import utils from '../../../core/utils/utils';
 import Fluorescent from '../../../core/Fluorescent';
-
 loadResources();
 
-chrome.promise = new ChromePromise();
+const chromePromise = new ChromePromise();
 
 let fl;
 
@@ -14,7 +14,7 @@ function init() {
   if (fl) { fl.darken(); }
   fl = new Fluorescent();
 
-  return chrome.promise.runtime.sendMessage({
+  return chromePromise.runtime.sendMessage({
     type: 'findByUrl',
     url: utils.getPageUrl(window)
   }).then(annotations => {
@@ -26,7 +26,7 @@ function init() {
 init(); window.addEventListener('hashchange', init);
 
 function handleAdd({ annotation }) {
-  chrome.promise.runtime.sendMessage({
+  chromePromise.runtime.sendMessage({
     type: 'save',
     annotation
   }).then(id =>
@@ -35,7 +35,7 @@ function handleAdd({ annotation }) {
 }
 
 function handleDelete({ id }) {
-  chrome.promise.runtime.sendMessage({
+  chromePromise.runtime.sendMessage({
     type: 'delete',
     id
   }).then(() =>
@@ -44,7 +44,7 @@ function handleDelete({ id }) {
 }
 
 function handleEdit({ annotation }) {
-  chrome.promise.runtime.sendMessage({
+  chromePromise.runtime.sendMessage({
     type: 'save',
     annotation
   }).then(id =>

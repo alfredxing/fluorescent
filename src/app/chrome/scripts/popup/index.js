@@ -1,9 +1,10 @@
 'use strict';
 
-chrome.promise = new ChromePromise();
+import ChromePromise from 'chrome-promise';
+const chromePromise = new ChromePromise();
 
 function sendToActiveTab(message) {
-  chrome.promise.tabs.query({
+  chromePromise.tabs.query({
     currentWindow: true,
     active: true
   }).then(tabs =>

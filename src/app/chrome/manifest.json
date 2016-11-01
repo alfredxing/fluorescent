@@ -32,7 +32,6 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-        "lib/chrome-promise/chrome-promise.js",
         "scripts/content.js"
       ],
       "run_at": "document_idle",
